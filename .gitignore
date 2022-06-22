@@ -47,3 +47,6 @@ Thumbs.db
 
 # temporary files
 /TEMP
+
+# config
+/src/config.ts
