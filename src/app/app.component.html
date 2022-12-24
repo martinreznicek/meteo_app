@@ -46,11 +46,63 @@
   </div>
   <div class="col-3 h-100 vstack">
     <h3>Wind direction</h3>
-    <img id="windmeter" src="/assets/images/arrow.png" alt="image">
+    <img id="windmeter1" class="windmeter" src="/assets/images/arrow.png" alt="image">
   </div>
 </div>
 <!--<div class="clear"></div>-->
 <div class="row my-auto mx-3">
   <p id="lastUpdate"> Last update: {{lastUpdate}}</p>
 </div>
+
+<div class="row my-auto mx-3">
+  <mat-card class="example-card">
+    <mat-card-header>
+<!--      <div mat-card-avatar class="example-header-image"></div>-->
+      <mat-card-title>{{weatherInfo.name}}</mat-card-title>
+      <mat-card-subtitle>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+        Information
+      </mat-card-subtitle>
+    </mat-card-header>
+<!--    <icon class="fa-solid fa-cloud"></icon>-->
+    <img mat-card-image class="watherImg" src="../assets/images/cloud-solid.svg" alt="Weather">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-6 fs-2">
+          <div class="h-50 vertallign">
+            <span>
+              <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+              {{weatherInfo.main.temp}} °C
+            </span>
+          </div>
+          <div class="h-50 vertallign">
+            <span>
+              <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+              {{weatherInfo.main.humidity}} %
+            </span>
+          </div>
+        </div>
+        <div class="col-6 h-100" style="display: flex;">
+          <span>
+          <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+          <img id="windmeter" class="windmeter" src="/assets/images/arrow.png" alt="image">
+          </span>
+        </div>
+      </div>
+
+<!--      <p>-->
+<!--        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
+<!--        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
+<!--        bred for hunting.-->
+<!--      </p>-->
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+        <mat-icon>delete</mat-icon>
+      </button>
+<!--      <button mat-button>SHARE</button>-->
+    </mat-card-actions>
+  </mat-card>
+</div>
+
 <router-outlet></router-outlet>

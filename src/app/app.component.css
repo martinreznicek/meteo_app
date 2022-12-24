@@ -36,9 +36,8 @@ h3{
   background-image: url('../assets/images/scale_humi.jpg');
 }
 
-img{
-  /*width: 50px;*/
-  height: 120px;
+.windmeter {
+  height: 6rem;
   margin: auto;
 }
 
@@ -92,6 +91,27 @@ img{
 
 .plus-50 {
   border-bottom: black solid 1px;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.watherImg {
+  width: 40%;
+  display: flex;
+  margin: 1.5rem auto;
+}
+
+.vertallign {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 #barTemp {
