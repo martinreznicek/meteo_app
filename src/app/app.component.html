@@ -1,42 +1,56 @@
 <head>
-  <script src="https://api.mapy.cz/loader.js"></script>
-  <script>Loader.load()</script>
+  <title>Waether Info</title>
+<!--  <script src="https://api.mapy.cz/loader.js"></script>-->
+<!--  <script>Loader.load()</script>-->
 </head>
 
 <header>
 <h1>Weather info</h1>
 </header>
-
-  <div class="column">
-  <h2>Weather info</h2>
-    <p> Location: {{weatherInfo.name}}</p>
-    <p> Temperature: {{weatherInfo.main.temp}} °C</p>
-    <p> Humidity: {{weatherInfo.main.humidity}} %</p>
-    <p> Wind: {{weatherInfo.wind.speed}} m/s, {{windDirectionCompass}} </p>
+<div class="row my-auto mx-3" style="height: 60% !important;">
+  <div class="col-3 h-100">
+  <h3>Summary</h3>
+    <div class="ms-4">
+      <p> Location: {{weatherInfo.name}}</p>
+      <p> Temperature: {{weatherInfo.main.temp}} °C</p>
+      <p> Humidity: {{weatherInfo.main.humidity}} %</p>
+      <p> Wind: {{weatherInfo.wind.speed}} m/s, {{windDirectionCompass}} </p>
+    </div>
   </div>
+  <div class="col-3 h-100">
+    <h3>Temperature</h3>
+<!--      <div class="scale">-->
+<!--        <div id="barTemp"></div>-->
+<!--      </div>-->
 
-
-  <div class="column therm">
-    <h2>Temperature</h2>
-      <div class="scale">
-        <div id="barTemp"></div>  
+<!--    <div class="plus-50">Zero</div>-->
+    <div class="zero"></div>
+<!--    <div class="minus-30">Zero</div>-->
+    <div class="progress">
+      <div id="barTemp2" class="progress-bar" [ngClass]="weatherInfo.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
+           role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"> {{weatherInfo.main.temp}} °C
       </div>
+    </div>
   </div>
+  <div class="col-3 h-100">
 
-
-  <div class="column humi">
-    <h2>Humidity</h2>
-    <div class="scale">
-      <div id="barHumi"></div>  
-    </div>   
+    <h3>Humidity</h3>
+<!--    <div class="scale">-->
+<!--      <div id="barHumi"></div>-->
+<!--    </div>-->
+    <div class="progress" style="left: 60%;">
+      <div  id="barHumi2" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+        {{weatherInfo.main.humidity}} %
+      </div>
+    </div>
   </div>
-
-  <div class="column wind">
-    <h2>Wind</h2>
-    <img id="windmeter" src="/assets/images/compass_needle.png" alt="image">
+  <div class="col-3 h-100 vstack">
+    <h3>Wind direction</h3>
+    <img id="windmeter" src="/assets/images/arrow.png" alt="image">
   </div>
-
- <div class="clear"></div>
+</div>
+<!--<div class="clear"></div>-->
+<div class="row my-auto mx-3">
   <p id="lastUpdate"> Last update: {{lastUpdate}}</p>
-
+</div>
 <router-outlet></router-outlet>

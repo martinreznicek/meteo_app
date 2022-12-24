@@ -1,4 +1,4 @@
-export class Weather{                       
+export class Weather{
   coord: {
     lon: number,
     lat: number
@@ -19,15 +19,15 @@ export class Weather{
     temp_max: number,
     pressure: number,
     humidity: number
-  }
+  };
   visibility: number;
   wind: {
     speed: 1.5,
     deg: 350
-  }
+  };
   clouds: {
     all: number;
-  }
+  };
   dt: number;
   sys: {
     type: number,
@@ -40,7 +40,7 @@ export class Weather{
   timezone: number;
   id: number;
   name: string;
-  cod: number
-}                         
-  
-                          
+  cod: number;
+}
+
+
