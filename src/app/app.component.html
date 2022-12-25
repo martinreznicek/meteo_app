@@ -60,36 +60,41 @@
 <!--      <div mat-card-avatar class="example-header-image"></div>-->
       <mat-card-title>{{weatherInfo.name}}</mat-card-title>
       <mat-card-subtitle>
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+        <mat-icon class="align-bottom" aria-hidden="false" aria-label="Example home icon">location_on</mat-icon>
         Information
       </mat-card-subtitle>
     </mat-card-header>
-<!--    <icon class="fa-solid fa-cloud"></icon>-->
     <img mat-card-image class="watherImg" src="../assets/images/cloud-solid.svg" alt="Weather">
     <mat-card-content>
       <div class="row">
         <div class="col-6 fs-2">
           <div class="h-50 vertallign">
             <span>
-              <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">water_drop</mat-icon>
               {{weatherInfo.main.temp}} °C
             </span>
           </div>
           <div class="h-50 vertallign">
             <span>
-              <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">device_thermostat</mat-icon>
+<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
               {{weatherInfo.main.humidity}} %
             </span>
           </div>
         </div>
         <div class="col-6 h-100" style="display: flex;">
-          <span>
-          <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
-          <img id="windmeter" class="windmeter" src="/assets/images/arrow.png" alt="image">
-          </span>
+          <div class="row">
+            <div class="col-3 align-self-center">
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
+<!--           <fa-icon [icon]="wind" size="lg"></fa-icon>-->
+            </div>
+            <div class="col-6">
+              <img id="windmeter" class="windmeter" src="/assets/images/arrow.png" alt="image">
+            </div>
+          </div>
         </div>
       </div>
-
 <!--      <p>-->
 <!--        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
 <!--        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
