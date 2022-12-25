@@ -14,7 +14,9 @@
       <p> Location: {{weatherInfo[0]?.name}}</p>
       <p> Temperature: {{weatherInfo[0].main.temp}} °C</p>
       <p> Humidity: {{weatherInfo[0].main.humidity}} %</p>
-      <p> Wind: {{weatherInfo[0].wind.speed}} m/s, {{windDirectionCompass}} </p>
+<!--      <p> Wind: {{weatherInfo[0].wind.speed}} m/s, {{windDirectionCompass}} </p>-->
+      <p> Wind: {{weatherInfo[0].wind.speed}} m/s, <span id="windDirection"> direction </span></p>
+
     </div>
   </div>
   <div class="col-3 h-100">

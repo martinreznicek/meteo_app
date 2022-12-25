@@ -18,11 +18,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(private service: MeteoService, private renderer: Renderer2) { }
 
   async ngOnInit() {
-    this.getWeatherInfo(true);
+    await this.getWeatherInfo(true);
   }
 
   ngAfterViewInit() {
     this.setWindDirection(this.weatherInfo[0].wind.deg);
+    document.getElementById('windDirection').innerHTML = this.windDirectionCompass;
   }
 
   /*TODO
