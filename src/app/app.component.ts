@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import { MeteoService } from './meteo/meteo.service';
 import { Weather } from './meteo/models/weather.model';
 
@@ -7,9 +7,9 @@ import { Weather } from './meteo/models/weather.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  public title = 'meteo';
-  public weatherInfo: Weather;
+export class AppComponent implements OnInit, AfterViewInit {
+  public title = 'Weather Info';
+  public weatherInfo: Weather[] = [];
   public windDirectionCompass: string;
   public lastUpdate: string;
   private lat = 50;
@@ -18,7 +18,11 @@ export class AppComponent implements OnInit {
   constructor(private service: MeteoService, private renderer: Renderer2) { }
 
   async ngOnInit() {
-    this.getWeatherInfo();
+    this.getWeatherInfo(true);
+  }
+
+  ngAfterViewInit() {
+    this.setWindDirection(this.weatherInfo[0].wind.deg);
   }
 
   /*TODO
@@ -33,12 +37,14 @@ export class AppComponent implements OnInit {
     return temp;
   }
 
-  private async getWeatherInfo() {
+  private async getWeatherInfo(onInit?: boolean) {
     try {
-      this.weatherInfo = await this.service.get(this.lat, this.long);
-      this.setTemperatureAndHumidity(this.weatherInfo.main.temp, this.weatherInfo.main.humidity);
-      this.setWindDirection(this.weatherInfo.wind.deg);
-      this.lastUpdate = this.setLastUpdate(this.weatherInfo.dt);
+      this.weatherInfo[0] = await this.service.get(this.lat, this.long);
+      this.setTemperatureAndHumidity(this.weatherInfo[0].main.temp, this.weatherInfo[0].main.humidity);
+      if (!onInit) {
+        this.setWindDirection(this.weatherInfo[0].wind.deg);
+      }
+      this.lastUpdate = this.setLastUpdate(this.weatherInfo[0].dt);
       /* FOR TESTING
       * this.lat++;
       *console.log('weatherInfo', this.weatherInfo);
@@ -64,14 +70,16 @@ export class AppComponent implements OnInit {
     return date;
   }
 
+  public addCard() {
+    this.weatherInfo.push(this.weatherInfo[0]);
+  }
+
+  public removeCard(index: number) {
+    this.weatherInfo.splice(index, 1);
+  }
+
   // if minutes is smaller than 10, add 0 => minutes has always 2 digits
   private formateDatetimeValue(value: number) {
-    // Elegant ES6 function to format a date into hh:mm:ss:
-    // const leadingZero = (num) => `0${num}`.slice(-2);
-    // const formatTime = (date) =>
-    //   [date.getHours(), date.getMinutes(), date.getSeconds()]
-    //   .map(leadingZero)
-    //   .join(':');
     return (value < 10 ? '0' : '') + value;
   }
 
