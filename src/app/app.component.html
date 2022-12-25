@@ -66,7 +66,8 @@
         Information
       </mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image class="watherImg" src="../assets/images/cloud-solid.svg" alt="Weather">
+    <img mat-card-image class="watherImg" alt="Weather"
+         [src]="'http://openweathermap.org/img/wn/' + wi.weather[0].icon + '@2x.png'">
     <mat-card-content>
       <div class="row">
         <div class="col-6 fs-2">
