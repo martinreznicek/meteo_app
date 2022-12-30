@@ -9,4 +9,5 @@ export interface WeatherCard {
   name: string;
   weather: Weather;
   loading?: boolean;
+  showButtons: boolean;
 }

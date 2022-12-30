@@ -7,59 +7,24 @@
 <header>
 <h1>Weather info</h1>
 </header>
-<div class="row my-auto mx-3" style="height: 60% !important;">
-  <div class="col-3 h-100">
-  <h3>Summary</h3>
-    <div class="ms-4">
-      <p> Location: {{weatherInfo[0]?.weather.name}}</p>
-      <p> Temperature: {{weatherInfo[0].weather.main.temp}} °C</p>
-      <p> Humidity: {{weatherInfo[0].weather.main.humidity}} %</p>
-<!--      <p> Wind: {{weatherInfo[0].wind.speed}} m/s, {{windDirectionCompass}} </p>-->
-      <p> Wind: {{weatherInfo[0].weather.wind.speed}} m/s, <span id="windDirection"> direction </span></p>
 
-    </div>
-  </div>
-  <div class="col-3 h-100">
-    <h3>Temperature</h3>
-<!--      <div class="scale">-->
-<!--        <div id="barTemp"></div>-->
-<!--      </div>-->
-
-<!--    <div class="plus-50">Zero</div>-->
-    <div class="zero"></div>
-<!--    <div class="minus-30">Zero</div>-->
-    <div class="progress">
-      <div id="barTemp2" class="progress-bar" [ngClass]="weatherInfo[0].weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
-           role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"> {{weatherInfo[0].weather.main.temp}} °C
-      </div>
-    </div>
-  </div>
-  <div class="col-3 h-100">
-
-    <h3>Humidity</h3>
-<!--    <div class="scale">-->
-<!--      <div id="barHumi"></div>-->
-<!--    </div>-->
-    <div class="progress" style="left: 60%;">
-      <div  id="barHumi2" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-        {{weatherInfo[0].weather.main.humidity}} %
-      </div>
-    </div>
-  </div>
-  <div class="col-3 h-100 vstack">
-    <h3>Wind direction</h3>
-    <img id="windmeter_a" class="windmeter" src="/assets/images/arrow.png" alt="image">
-  </div>
-</div>
-<!--<div class="clear"></div>-->
-<div class="row my-auto mx-3">
-  <p id="lastUpdate"> Last update: {{lastUpdate}}</p>
+<div *ngIf="addDialog">
+<!--  <mat-form-field class="example-full-width">-->
+    <input matInput id="citySelect" type="text" placeholder="Select a city" aria-label="Number" class="d-block m-auto"
+           [formControl]="myControl" [matAutocomplete]="auto" (keyup)="startTimer()">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option.name + ', ' + option.country }}
+        {{ option.state ? ' (' + option.state + ')' : '' }}
+      </mat-option>
+    </mat-autocomplete>
+<!--  </mat-form-field>-->
 </div>
 
 <div class="row m-3">
 
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
-    <mat-card  class="example-card mx-2 h-100">
+    <mat-card class="example-card mx-2 h-100">
       <mat-card-header>
   <!--      <div mat-card-avatar class="example-header-image"></div>-->
         <mat-card-title [id]="'name' + i" contenteditable="true" (keyup)="changeTitle(i)">{{wi.name}}</mat-card-title>
@@ -74,14 +39,40 @@
       <img mat-card-image class="watherImg" alt="Weather"
            [src]="'http://openweathermap.org/img/wn/' + wi.weather.weather[0].icon + '@2x.png'">
       <mat-card-content>
-  <!--      <p>-->
-  <!--        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
-  <!--        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
-  <!--        bred for hunting.-->
-  <!--      </p>-->
+        <div class="row">
+          <div class="col-6 fs-2">
+            <div class="h-50 vertallign">
+            <span>
+<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">water_drop</mat-icon>
+              {{wi.weather.main.temp}} °C
+            </span>
+            </div>
+            <div class="h-50 vertallign">
+            <span>
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">device_thermostat</mat-icon>
+              <!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
+              {{wi.weather.main.humidity}} %
+            </span>
+            </div>
+          </div>
+          <div class="col-6 h-100">
+            <div class="row">
+              <div class="col-3 align-self-center">
+                <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
+                <!--           <fa-icon [icon]="wind" size="lg"></fa-icon>-->
+              </div>
+              <div class="col-6">
+                <img [id]="'windmeter' + i" class="windmeter" src="/assets/images/arrow.png" alt="image">
+              </div>
+            </div>
+            <div class="text-center" style="font-size: 1.25rem;">{{wi.weather.wind.speed}} m/s</div>
+          </div>
+        </div>
       </mat-card-content>
-      <mat-card-actions align="end">
-        <button [disabled]="weatherInfo.length === 1 && i === 0"  mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="removeCard(i)">
+      <mat-card-actions align="end" style="min-height: 4rem">
+        <button [disabled]="weatherInfo.length === 1 && i === 0"  mat-fab color="primary"
+                aria-label="Example icon button with a delete icon" (click)="removeCard(i)">
           <mat-icon>delete</mat-icon>
         </button>
     <!--      <button mat-button>SHARE</button>-->
@@ -99,5 +90,59 @@
     </mat-card>
    </div>
 </div>
+
+<!--<div>-->
+<!--  <mat-spinner></mat-spinner>-->
+<!--</div>-->
+
+<div class="row my-auto mx-3">
+  <p id="lastUpdate"> Last update: {{lastUpdate}}</p>
+</div>
+
+<div class="row my-auto mx-3" style="height: 60% !important;">
+  <div class="col-3 h-100">
+    <h3>Summary</h3>
+    <div class="ms-4">
+      <p> Location: {{weatherInfo[0]?.weather.name}}</p>
+      <p> Temperature: {{weatherInfo[0].weather.main.temp}} °C</p>
+      <p> Humidity: {{weatherInfo[0].weather.main.humidity}} %</p>
+      <!--      <p> Wind: {{weatherInfo[0].wind.speed}} m/s, {{windDirectionCompass}} </p>-->
+      <p> Wind: {{weatherInfo[0].weather.wind.speed}} m/s, <span id="windDirection"> direction </span></p>
+
+    </div>
+  </div>
+  <div class="col-3 h-100">
+    <h3>Temperature</h3>
+    <!--      <div class="scale">-->
+    <!--        <div id="barTemp"></div>-->
+    <!--      </div>-->
+
+    <!--    <div class="plus-50">Zero</div>-->
+    <div class="zero"></div>
+    <!--    <div class="minus-30">Zero</div>-->
+    <div class="progress">
+      <div id="barTemp2" class="progress-bar" [ngClass]="weatherInfo[0].weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
+           role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"> {{weatherInfo[0].weather.main.temp}} °C
+      </div>
+    </div>
+  </div>
+  <div class="col-3 h-100">
+
+    <h3>Humidity</h3>
+    <!--    <div class="scale">-->
+    <!--      <div id="barHumi"></div>-->
+    <!--    </div>-->
+    <div class="progress" style="left: 60%;">
+      <div  id="barHumi2" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+        {{weatherInfo[0].weather.main.humidity}} %
+      </div>
+    </div>
+  </div>
+  <div class="col-3 h-100 vstack">
+    <h3>Wind direction</h3>
+    <img id="windmeter_a" class="windmeter" src="/assets/images/arrow.png" alt="image">
+  </div>
+</div>
+<!--<div class="clear"></div>-->
 
 <router-outlet></router-outlet>

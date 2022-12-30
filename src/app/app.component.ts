@@ -1,6 +1,9 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {MeteoService} from './meteo/meteo.service';
 import {WeatherCard} from './meteo/models/weather-card.model';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {City} from './meteo/models/city.model';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +17,33 @@ export class AppComponent implements OnInit, AfterViewInit {
   public lastUpdate: string;
   public math = Math;
 
+  public mouseOverButton = false;
+
+  myControl = new FormControl();
+  options: City[] = [];
+  filteredOptions: Observable<string[]>;
+
+  public addDialog = false;
+  public typingTimer: any;
+  public doneTypingInterval = 1500;
+
+
   constructor(private service: MeteoService, private renderer: Renderer2) {
-    this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null});
+    this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null, showButtons: false});
+  }
+
+  public startTimer() {
+    const c = true;
+    clearTimeout(this.typingTimer);
+    if (c) {
+      this.typingTimer = setTimeout(() => {
+        this.afterDoneTyping();
+      }, this.doneTypingInterval);
+    }
+  }
+
+  private async afterDoneTyping() {
+    this.options = await this.service.getCoordinates(this.myControl.value);
   }
 
   async ngOnInit() {
@@ -45,7 +73,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   private async getWeatherInfo(onInit?: boolean) {
     try {
-      this.weatherInfo[0].weather = await this.service.get({lat: 50, long: 15});
+      this.weatherInfo[0].weather = await this.service.getWeather({lat: 50, long: 15});
       if (!this.weatherInfo[0].name) {
         this.weatherInfo[0].name = this.weatherInfo[0].weather.name;
       }
@@ -67,17 +95,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private async getWeatherInfo2() {
-    const index = this.weatherInfo.length;
-    const newObject: WeatherCard = {id: index, coordinates: {lat: 52.5, long: 14.2}, name: 'Karel', weather: null, loading: true};
-    this.weatherInfo.push(newObject);
+    const index = this.weatherInfo.length - 1;
+    console.log(this.weatherInfo[index]);
     try {
-      this.weatherInfo[index].weather = await this.service.get(newObject.coordinates);
+      this.weatherInfo[index].weather = await this.service.getWeather(this.weatherInfo[index].coordinates);
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
-      setTimeout(() => { this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter1'); }, 0);
+      setTimeout(() => { this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter1'); }, 0);
       this.lastUpdate = this.setLastUpdate(this.weatherInfo[1].weather.dt);
       this.weatherInfo[index].loading = false;
+      console.log(this.weatherInfo);
       /* FOR TESTING
       * this.lat++;
       *console.log('weatherInfo', this.weatherInfo);
@@ -104,12 +132,44 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public async addCard() {
-    await this.getWeatherInfo2();
+    this.addDialog = true;
     // this.weatherInfo.push(this.weatherInfo[0]);
   }
 
   public removeCard(index: number) {
     this.weatherInfo.splice(index, 1);
+  }
+
+  public toggleButtons(index: number, mouseOver?: boolean) {
+    if (this.mouseOverButton) {
+      console.log('mouseOverButton');
+      return;
+    }
+    const showButtons = this.weatherInfo[index].showButtons;
+    if (mouseOver) {
+      if (!showButtons) {
+        this.weatherInfo[index].showButtons = true;
+      }
+    } else {
+      this.weatherInfo[index].showButtons = false;
+    }
+  }
+
+  public onBtnOver(mouseOver?: boolean) {
+    this.mouseOverButton = mouseOver;
+  }
+
+  public async getCityGPS(city: string) {
+    this.options = await this.service.getCoordinates(city);
+    console.log(this.options);
+  }
+
+  public async optionSelected(event) {
+    const city = event.option.value as City;
+    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
+      weather: null, loading: true, showButtons: false};
+    this.weatherInfo.push(newObject);
+    await this.getWeatherInfo2();
   }
 
   // if minutes is smaller than 10, add 0 => minutes has always 2 digits
