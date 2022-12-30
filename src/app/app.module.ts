@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {MatInputModule} from '@angular/material/input';
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatMenuModule,
     FontAwesomeModule,
     ReactiveFormsModule
   ],

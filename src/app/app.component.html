@@ -5,8 +5,30 @@
 </head>
 
 <header>
-<h1>Weather info</h1>
+  <div class="d-flex">
+  <h1 class="flex-fill">Weather info</h1>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" class="menu">
+        <button mat-menu-item>
+          <mat-icon> insert_chart_outlined</mat-icon>
+          <span>Forecast</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications</mat-icon>
+          <span>Alerts</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>image</mat-icon>
+          <span>Page Layout</span>
+        </button>
+      </mat-menu>
+    </div>
+</div>
 </header>
+
 <div *ngIf="addDialog" class="d-block m-auto">
   <mat-form-field style="min-width: 15%; margin: auto 2.25rem;">
     <input matInput type="text" placeholder="Select a city"
