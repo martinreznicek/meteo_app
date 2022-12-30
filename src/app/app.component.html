@@ -7,18 +7,18 @@
 <header>
 <h1>Weather info</h1>
 </header>
-
-<div *ngIf="addDialog">
-<!--  <mat-form-field class="example-full-width">-->
-    <input matInput id="citySelect" type="text" placeholder="Select a city" aria-label="Number" class="d-block m-auto"
-           [formControl]="myControl" [matAutocomplete]="auto" (keyup)="startTimer()">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
-      <mat-option *ngFor="let option of options" [value]="option">
+<div *ngIf="addDialog" class="d-block m-auto">
+  <mat-form-field style="min-width: 15%; margin: auto 2.25rem;">
+    <input matInput type="text" placeholder="Select a city"
+           [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)"
+                      [displayWith]="getSelectedCityName">
+      <mat-option *ngFor="let option of cities" [value]="option">
         {{ option.name + ', ' + option.country }}
         {{ option.state ? ' (' + option.state + ')' : '' }}
       </mat-option>
     </mat-autocomplete>
-<!--  </mat-form-field>-->
+  </mat-form-field>
 </div>
 
 <div class="row m-3">

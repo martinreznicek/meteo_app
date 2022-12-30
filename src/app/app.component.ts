@@ -19,13 +19,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public mouseOverButton = false;
 
-  myControl = new FormControl();
-  options: City[] = [];
+  public city = new FormControl();
+  public cities: City[] = [];
   filteredOptions: Observable<string[]>;
 
   public addDialog = false;
   public typingTimer: any;
   public doneTypingInterval = 1500;
+  public selectedCity: string;
 
 
   constructor(private service: MeteoService, private renderer: Renderer2) {
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private async afterDoneTyping() {
-    this.options = await this.service.getCoordinates(this.myControl.value);
+    this.cities = await this.service.getCoordinates(this.city.value);
   }
 
   async ngOnInit() {
@@ -102,7 +103,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
-      setTimeout(() => { this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter1'); }, 0);
+      setTimeout(() => {
+        this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
+        }, 0);
       this.lastUpdate = this.setLastUpdate(this.weatherInfo[1].weather.dt);
       this.weatherInfo[index].loading = false;
       console.log(this.weatherInfo);
@@ -160,16 +163,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public async getCityGPS(city: string) {
-    this.options = await this.service.getCoordinates(city);
-    console.log(this.options);
+    this.cities = await this.service.getCoordinates(city);
+    console.log(this.cities);
   }
 
-  public async optionSelected(event) {
+  public async onOptionSelected(event) {
     const city = event.option.value as City;
+    this.selectedCity = event.option.value;
     const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
       weather: null, loading: true, showButtons: false};
     this.weatherInfo.push(newObject);
     await this.getWeatherInfo2();
+    this.addDialog = false;
+  }
+
+  public getSelectedCityName(city) {
+    return city.name;
   }
 
   // if minutes is smaller than 10, add 0 => minutes has always 2 digits
