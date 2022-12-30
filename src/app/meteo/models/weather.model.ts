@@ -1,4 +1,4 @@
-export class Weather{
+export interface Weather {
   coord: {
     lon: number,
     lat: number

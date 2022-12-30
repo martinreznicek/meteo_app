@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
-import { MeteoService } from './meteo/meteo.service';
-import { Weather } from './meteo/models/weather.model';
+import {MeteoService} from './meteo/meteo.service';
+import {WeatherCard} from './meteo/models/weather-card.model';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +9,21 @@ import { Weather } from './meteo/models/weather.model';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   public title = 'Weather Info';
-  public weatherInfo: Weather[] = [];
+  public weatherInfo: WeatherCard[] = [];
   public windDirectionCompass: string;
   public lastUpdate: string;
-  private lat = 50;
-  private long = 15;
+  public math = Math;
 
-  constructor(private service: MeteoService, private renderer: Renderer2) { }
+  constructor(private service: MeteoService, private renderer: Renderer2) {
+    this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null});
+  }
 
   async ngOnInit() {
     await this.getWeatherInfo(true);
   }
 
   ngAfterViewInit() {
-    this.setWindDirection(this.weatherInfo[0].wind.deg);
+    this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter0');
     document.getElementById('windDirection').innerHTML = this.windDirectionCompass;
   }
 
@@ -38,20 +39,51 @@ export class AppComponent implements OnInit, AfterViewInit {
     return temp;
   }
 
+  public changeTitle(index: number) {
+    this.weatherInfo[index].name = document.getElementById('name' + index.toString()).innerHTML;
+  }
+
   private async getWeatherInfo(onInit?: boolean) {
     try {
-      this.weatherInfo[0] = await this.service.get(this.lat, this.long);
-      this.setTemperatureAndHumidity(this.weatherInfo[0].main.temp, this.weatherInfo[0].main.humidity);
-      if (!onInit) {
-        this.setWindDirection(this.weatherInfo[0].wind.deg);
+      this.weatherInfo[0].weather = await this.service.get({lat: 50, long: 15});
+      if (!this.weatherInfo[0].name) {
+        this.weatherInfo[0].name = this.weatherInfo[0].weather.name;
       }
-      this.lastUpdate = this.setLastUpdate(this.weatherInfo[0].dt);
+      this.setTemperatureAndHumidity(this.weatherInfo[0].weather.main.temp, this.weatherInfo[0].weather.main.humidity);
+      if (!onInit) {
+        this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter0');
+      }
+      this.lastUpdate = this.setLastUpdate(this.weatherInfo[0].weather.dt);
       /* FOR TESTING
       * this.lat++;
       *console.log('weatherInfo', this.weatherInfo);
       */
       setTimeout(() => {
         this.getWeatherInfo();
+      }, 600000);
+    } catch (error) {
+      console.error('getWeatherInfo', error);
+    }
+  }
+
+  private async getWeatherInfo2() {
+    const index = this.weatherInfo.length;
+    const newObject: WeatherCard = {id: index, coordinates: {lat: 52.5, long: 14.2}, name: 'Karel', weather: null, loading: true};
+    this.weatherInfo.push(newObject);
+    try {
+      this.weatherInfo[index].weather = await this.service.get(newObject.coordinates);
+      if (!this.weatherInfo[index].name) {
+        this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
+      }
+      setTimeout(() => { this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter1'); }, 0);
+      this.lastUpdate = this.setLastUpdate(this.weatherInfo[1].weather.dt);
+      this.weatherInfo[index].loading = false;
+      /* FOR TESTING
+      * this.lat++;
+      *console.log('weatherInfo', this.weatherInfo);
+      */
+      setTimeout(() => {
+        this.getWeatherInfo2();
       }, 600000);
     } catch (error) {
       console.error('getWeatherInfo', error);
@@ -71,8 +103,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     return date;
   }
 
-  public addCard() {
-    this.weatherInfo.push(this.weatherInfo[0]);
+  public async addCard() {
+    await this.getWeatherInfo2();
+    // this.weatherInfo.push(this.weatherInfo[0]);
   }
 
   public removeCard(index: number) {
@@ -98,13 +131,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     humidity.style.top = (100 - humi).toString() + '%';
   }
 
-  private setWindDirection(windDirection: number) {
+  private setWindDirection(windDirection: number, elementId: string) {
     this.resolveWindDirection(windDirection);
-    this.setCompassNeedleAngle(windDirection);
+    this.setCompassNeedleAngle(windDirection, elementId);
   }
 
-  private setCompassNeedleAngle(windDirection: number) {
-    const image = document.getElementById('windmeter');
+  private setCompassNeedleAngle(windDirection: number, elementId: string) {
+    const image = document.getElementById(elementId);
     this.renderer.setStyle(
       image,
       'transform',

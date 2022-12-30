@@ -10,8 +10,8 @@ export class MeteoService {
 
   constructor(private http: HttpClient) { }
 
-  public get(lat: number, long: number): Promise<Weather> {
-    const urlWithParams = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${Config.WEATHER_API_KEY}`;
+  public get(coordinates: {lat: number, long: number}): Promise<Weather> {
+    const urlWithParams = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.long}&units=metric&appid=${Config.WEATHER_API_KEY}`;
     return this.http.get<Weather>(urlWithParams).toPromise();
   }
 
