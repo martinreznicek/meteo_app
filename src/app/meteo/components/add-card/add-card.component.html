@@ -1,29 +1,38 @@
 <h1 mat-dialog-title>Add location</h1>
 <div mat-dialog-content>
   <p>Select a location to add</p>
-  <mat-form-field style="min-width: 15%;">
-    <input matInput type="text" placeholder="Select a city"
+  <mat-form-field style="width: 90%;">
+    <input matInput type="text" placeholder="Select a city" [disabled]="true"
            [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName">
-      <mat-option *ngFor="let option of cities" [value]="option">
+      <mat-option *ngFor="let option of cities" [value]="optionSelected ? option : ''">
         {{ option.name + ', ' + option.country }}
         {{ option.state ? ' (' + option.state + ')' : '' }}
       </mat-option>
     </mat-autocomplete>
+    <mat-error *ngIf="city.hasError('required') && !insertGpsManually">
+      Location is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
-  <mat-slide-toggle [(ngModel)]="insertGpsManually">Enter GPS manually</mat-slide-toggle>
-  <div *ngIf="insertGpsManually">
+  <mat-slide-toggle [(ngModel)]="insertGpsManually" (change)="onChange($event)">Enter GPS manually</mat-slide-toggle>
+  <div >
     <mat-form-field>
       <mat-label>Latitude</mat-label>
-      <input matInput [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually">
+      <input matInput type="number" [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually" [formControl]="latitude">
+      <mat-error *ngIf="latitude.hasError('required')">
+        Latitude is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Longitude</mat-label>
-      <input matInput [(ngModel)]="data.coordinates.long" [disabled]="!insertGpsManually">
+      <input matInput type="number" [(ngModel)]="data.coordinates.long" [disabled]="insertGpsManually" [formControl]="longitude">
+      <mat-error *ngIf="longitude.hasError('required')">
+        Longitude is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>OK</button>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data" (click)="onSelection()">OK</button>
 </div>
