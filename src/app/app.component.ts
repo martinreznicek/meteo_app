@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
 
   public async addCard() {
     const dialogRef = this.dialog.open(AddCardComponent, {
-      width: '20%',
+      width: '30%',
       data: {city: '', coordinates: {}}
     });
 
@@ -106,6 +106,7 @@ export class AppComponent implements OnInit {
 
   public removeCard(index: number) {
     this.weatherInfo.splice(index, 1);
+    this.saveToStorage();
   }
 
   public openEditDialog(index: number) {
@@ -157,6 +158,7 @@ export class AppComponent implements OnInit {
 
   private changeName(index: number, name: string) {
     this.weatherInfo[index].name = name;
+    this.saveToStorage();
   }
 
   // if minutes is smaller than 10, add 0 => minutes has always 2 digits
