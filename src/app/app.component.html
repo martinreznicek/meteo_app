@@ -48,8 +48,7 @@
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card class="example-card mx-2 h-100">
       <mat-card-header>
-  <!--      <div mat-card-avatar class="example-header-image"></div>-->
-        <mat-card-title [id]="'name' + i" contenteditable="true" (keyup)="changeTitle(i)">
+        <mat-card-title>
           {{ wi.name ? wi.name : 'Location ' + i }}
         </mat-card-title>
         <mat-card-subtitle>
@@ -59,6 +58,17 @@
           {{ math.abs(wi.coordinates.long).toFixed(5) }}
           {{ wi.coordinates.long > 0 ? 'E' : 'W'}}
         </mat-card-subtitle>
+        <div class="d-flex justify-content-end">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="menu">
+            <button mat-menu-item (click)="openEditDialog(i)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+          </mat-menu>
+        </div>
       </mat-card-header>
       <img mat-card-image class="watherImg" alt="Weather"
            [src]="'http://openweathermap.org/img/wn/' + wi.weather.weather[0].icon + '@2x.png'">

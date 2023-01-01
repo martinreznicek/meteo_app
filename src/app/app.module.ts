@@ -18,12 +18,14 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AddCardComponent } from './meteo/components/add-card/add-card.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { EditNameComponent } from './meteo/components/edit-name/edit-name/edit-name.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddCardComponent
+    AddCardComponent,
+    EditNameComponent
   ],
   imports: [
     BrowserModule,

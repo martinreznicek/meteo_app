@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
+import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-name.component';
 
 @Component({
   selector: 'app-root',
@@ -64,19 +65,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   /*TODO
-    dropdown to choose one of Czech regional cities https://material.angular.io/components/select/overview
-    input inside form for GPS coordinates https://material.angular.io/components/input/examples
-    improve layout https://material.angular.io/components/grid-list/examples
+    use local storage
+    add input validation for min and max number https://www.concretepage.com/angular-2/angular-4-min-max-validation
   */
 
   public showTemperature(): number {
     const temp = Math.floor(Math.random() * 100);
     console.log(temp);
     return temp;
-  }
-
-  public changeTitle(index: number) {
-    this.weatherInfo[index].name = document.getElementById('name' + index.toString()).innerHTML;
   }
 
   private async getWeatherInfo(onInit?: boolean) {
@@ -149,15 +145,23 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-      // this.selectedCity = result;
       this.onDataSelected(result);
     });
-    // this.weatherInfo.push(this.weatherInfo[0]);
   }
 
   public removeCard(index: number) {
     this.weatherInfo.splice(index, 1);
+  }
+
+  public openEditDialog(index: number) {
+    const dialogRef = this.dialog.open(EditNameComponent, {
+      width: '20%',
+      data: { name: this.weatherInfo[index].name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.changeName(index, result.name);
+    });
   }
 
   public toggleButtons(index: number, mouseOver?: boolean) {
@@ -229,6 +233,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public getSelectedCityName(city) {
     return city.name;
+  }
+
+  private changeName(index: number, name: string) {
+    this.weatherInfo[index].name = name;
   }
 
   // if minutes is smaller than 10, add 0 => minutes has always 2 digits

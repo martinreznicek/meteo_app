@@ -7,6 +7,10 @@ h3{
   text-align: center;
 }
 
+mat-card-header div {
+  flex: auto;
+}
+
 .column2 {
   float: left;
   width: 20%;
