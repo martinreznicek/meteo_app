@@ -12,14 +12,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddCardComponent } from './meteo/components/add-card/add-card.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AddCardComponent
   ],
   imports: [
     BrowserModule,
@@ -34,8 +38,11 @@ import {MatMenuModule} from '@angular/material/menu';
     MatAutocompleteModule,
     MatInputModule,
     MatMenuModule,
+    MatDialogModule,
+    MatSlideToggleModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

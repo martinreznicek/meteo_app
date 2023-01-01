@@ -4,6 +4,8 @@ import {WeatherCard} from './meteo/models/weather-card.model';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {City} from './meteo/models/city.model';
+import {MatDialog} from '@angular/material/dialog';
+import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
 
 @Component({
   selector: 'app-root',
@@ -28,10 +30,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   public doneTypingInterval = 1500;
   public selectedCity: string;
 
+  public animal: string;
+  public name: string;
 
-  constructor(private service: MeteoService, private renderer: Renderer2) {
-    this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null, showButtons: false});
-  }
+
+  constructor(
+    private service: MeteoService,
+    private renderer: Renderer2,
+    public dialog: MatDialog
+  ) { this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null, showButtons: false}); }
 
   public startTimer() {
     const c = true;
@@ -136,6 +143,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public async addCard() {
     this.addDialog = true;
+    const dialogRef = this.dialog.open(AddCardComponent, {
+      width: '20%',
+      data: {city: '', coordinates: {}}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      // this.selectedCity = result;
+      this.onDataSelected(result);
+    });
     // this.weatherInfo.push(this.weatherInfo[0]);
   }
 
@@ -172,6 +189,39 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.selectedCity = event.option.value;
     const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
       weather: null, loading: true, showButtons: false};
+    this.weatherInfo.push(newObject);
+    await this.getWeatherInfo2();
+    this.addDialog = false;
+  }
+
+  public async onCitySelected(city: City) {
+    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
+      weather: null, loading: true, showButtons: false};
+    this.weatherInfo.push(newObject);
+    await this.getWeatherInfo2();
+    this.addDialog = false;
+  }
+
+  public async onGpsInput(coord: {lat: number, long: number}) {
+    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: coord.lat, long: coord.long}, name: null,
+      weather: null, loading: true, showButtons: false};
+    this.weatherInfo.push(newObject);
+    await this.getWeatherInfo2();
+    this.addDialog = false;
+  }
+
+  private async onDataSelected(data: DialogData) {
+    const newObject: WeatherCard = { id: this.weatherInfo.length, coordinates: {lat: 0, long: 0},
+      name: null, weather: null, loading: true, showButtons: false };
+
+    if (data.coordinates.lat) {
+      newObject.coordinates = {lat: data.coordinates.lat, long: data.coordinates.long};
+    }
+    else if (data.city) {
+      newObject.name = data.city.name;
+      newObject.coordinates =  {lat: data.city.lat, long: data.city.lon};
+    }
+
     this.weatherInfo.push(newObject);
     await this.getWeatherInfo2();
     this.addDialog = false;

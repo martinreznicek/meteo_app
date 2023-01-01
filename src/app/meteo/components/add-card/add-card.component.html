@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Add location</h1>
+<div mat-dialog-content>
+  <p>Select a location to add</p>
+  <mat-form-field style="min-width: 15%;">
+    <input matInput type="text" placeholder="Select a city"
+           [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName">
+      <mat-option *ngFor="let option of cities" [value]="option">
+        {{ option.name + ', ' + option.country }}
+        {{ option.state ? ' (' + option.state + ')' : '' }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-slide-toggle [(ngModel)]="insertGpsManually">Enter GPS manually</mat-slide-toggle>
+  <div *ngIf="insertGpsManually">
+    <mat-form-field>
+      <mat-label>Latitude</mat-label>
+      <input matInput [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Longitude</mat-label>
+      <input matInput [(ngModel)]="data.coordinates.long" [disabled]="!insertGpsManually">
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>OK</button>
+</div>
