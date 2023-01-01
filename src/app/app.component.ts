@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
+import { Component, OnInit, Renderer2} from '@angular/core';
 import {MeteoService} from './meteo/meteo.service';
 import {WeatherCard} from './meteo/models/weather-card.model';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
@@ -13,7 +12,7 @@ import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-nam
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   public title = 'Weather Info';
   public weatherInfo: WeatherCard[] = [];
   public windDirectionCompass: string;
@@ -24,48 +23,20 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public city = new FormControl();
   public cities: City[] = [];
-  filteredOptions: Observable<string[]>;
-
-  public addDialog = false;
-  public typingTimer: any;
-  public doneTypingInterval = 1500;
-  public selectedCity: string;
-
-  public animal: string;
-  public name: string;
-
 
   constructor(
     private service: MeteoService,
     private renderer: Renderer2,
     public dialog: MatDialog
-  ) { this.weatherInfo.push({id: 0, coordinates: {lat: -50, long: 15}, name: '', weather: null, showButtons: false}); }
-
-  public startTimer() {
-    const c = true;
-    clearTimeout(this.typingTimer);
-    if (c) {
-      this.typingTimer = setTimeout(() => {
-        this.afterDoneTyping();
-      }, this.doneTypingInterval);
-    }
-  }
-
-  private async afterDoneTyping() {
-    this.cities = await this.service.getCoordinates(this.city.value);
-  }
+  ) { }
 
   async ngOnInit() {
-    await this.getWeatherInfo(true);
-  }
+    this.loadFromStorage();
+    this.getAllWeather();
 
-  ngAfterViewInit() {
-    this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter0');
-    document.getElementById('windDirection').innerHTML = this.windDirectionCompass;
   }
 
   /*TODO
-    use local storage
     add input validation for min and max number https://www.concretepage.com/angular-2/angular-4-min-max-validation
   */
 
@@ -75,50 +46,35 @@ export class AppComponent implements OnInit, AfterViewInit {
     return temp;
   }
 
-  private async getWeatherInfo(onInit?: boolean) {
+  private getAllWeather() {
     try {
-      this.weatherInfo[0].weather = await this.service.getWeather({lat: 50, long: 15});
-      if (!this.weatherInfo[0].name) {
-        this.weatherInfo[0].name = this.weatherInfo[0].weather.name;
-      }
-      this.setTemperatureAndHumidity(this.weatherInfo[0].weather.main.temp, this.weatherInfo[0].weather.main.humidity);
-      if (!onInit) {
-        this.setWindDirection(this.weatherInfo[0].weather.wind.deg, 'windmeter0');
-      }
-      this.lastUpdate = this.setLastUpdate(this.weatherInfo[0].weather.dt);
-      /* FOR TESTING
-      * this.lat++;
-      *console.log('weatherInfo', this.weatherInfo);
-      */
+      this.weatherInfo.forEach(w => {
+        this.getWeatherInfo(w.id, w.coordinates);
+      });
       setTimeout(() => {
-        this.getWeatherInfo();
+        this.getAllWeather();
       }, 600000);
-    } catch (error) {
-      console.error('getWeatherInfo', error);
     }
+    catch (err) {
+      console.error('getAllWeather', err);
+    }
+
   }
 
-  private async getWeatherInfo2() {
-    const index = this.weatherInfo.length - 1;
-    console.log(this.weatherInfo[index]);
+  private async getWeatherInfo(index: number, coordinates: {lat: number, long: number}, onInit?: boolean) {
     try {
-      this.weatherInfo[index].weather = await this.service.getWeather(this.weatherInfo[index].coordinates);
+      this.weatherInfo[index].weather = await this.service.getWeather(coordinates);
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
-      setTimeout(() => {
-        this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
+      // this.setTemperatureAndHumidity(this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
+      if (!onInit) {
+        setTimeout(() => {
+          this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
         }, 0);
-      this.lastUpdate = this.setLastUpdate(this.weatherInfo[1].weather.dt);
+      }
+      this.lastUpdate = this.setLastUpdate(this.weatherInfo[index].weather.dt);
       this.weatherInfo[index].loading = false;
-      console.log(this.weatherInfo);
-      /* FOR TESTING
-      * this.lat++;
-      *console.log('weatherInfo', this.weatherInfo);
-      */
-      setTimeout(() => {
-        this.getWeatherInfo2();
-      }, 600000);
     } catch (error) {
       console.error('getWeatherInfo', error);
     }
@@ -138,7 +94,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public async addCard() {
-    this.addDialog = true;
     const dialogRef = this.dialog.open(AddCardComponent, {
       width: '20%',
       data: {city: '', coordinates: {}}
@@ -183,37 +138,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.mouseOverButton = mouseOver;
   }
 
-  public async getCityGPS(city: string) {
-    this.cities = await this.service.getCoordinates(city);
-    console.log(this.cities);
-  }
-
-  public async onOptionSelected(event) {
-    const city = event.option.value as City;
-    this.selectedCity = event.option.value;
-    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
-      weather: null, loading: true, showButtons: false};
-    this.weatherInfo.push(newObject);
-    await this.getWeatherInfo2();
-    this.addDialog = false;
-  }
-
-  public async onCitySelected(city: City) {
-    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: city.lat, long: city.lon}, name: city.name,
-      weather: null, loading: true, showButtons: false};
-    this.weatherInfo.push(newObject);
-    await this.getWeatherInfo2();
-    this.addDialog = false;
-  }
-
-  public async onGpsInput(coord: {lat: number, long: number}) {
-    const newObject: WeatherCard = {id: this.weatherInfo.length, coordinates: {lat: coord.lat, long: coord.long}, name: null,
-      weather: null, loading: true, showButtons: false};
-    this.weatherInfo.push(newObject);
-    await this.getWeatherInfo2();
-    this.addDialog = false;
-  }
-
   private async onDataSelected(data: DialogData) {
     const newObject: WeatherCard = { id: this.weatherInfo.length, coordinates: {lat: 0, long: 0},
       name: null, weather: null, loading: true, showButtons: false };
@@ -227,12 +151,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     this.weatherInfo.push(newObject);
-    await this.getWeatherInfo2();
-    this.addDialog = false;
-  }
-
-  public getSelectedCityName(city) {
-    return city.name;
+    await this.getWeatherInfo(newObject.id, newObject.coordinates);
+    this.saveToStorage();
   }
 
   private changeName(index: number, name: string) {
@@ -292,6 +212,30 @@ export class AppComponent implements OnInit, AfterViewInit {
                                      break;
       default: this.windDirectionCompass = 'N';
                break;
+    }
+  }
+
+  private saveToStorage() {
+    const obj = {};
+    this.weatherInfo.forEach(w => {
+      obj[w.id] = { name: w.name, coordinates: w.coordinates };
+    });
+    localStorage.setItem('weatherInfo_storage', JSON.stringify(obj));
+  }
+
+  private loadFromStorage() {
+    const storedData = localStorage.getItem('weatherInfo_storage');
+    if (!storedData) {
+      this.weatherInfo.push({id: 0, name: 'Prague', coordinates: {lat: 50.0874654, long: 14.4212535},
+        weather: null, loading: true, showButtons: false});
+      return;
+    }
+    const parsedData = JSON.parse(storedData);
+    // tslint:disable-next-line:forin
+    for (const key in parsedData) {
+      const newObject: WeatherCard = {id: Number(key), name: parsedData[key].name, coordinates: parsedData[key].coordinates,
+        weather: null, loading: true, showButtons: false};
+      this.weatherInfo.push(newObject);
     }
   }
 
