@@ -23,7 +23,7 @@ export class AddCardComponent implements OnInit {
   public typingTimer: any;
   public doneTypingInterval = 1500;
   public insertGpsManually = false;
-  public optionSelected = false;
+  public optionConfirmed = false;
   public city = new FormControl( '', [Validators.required]);
   public latitude = new FormControl( '', [Validators.required, Validators.min(-90), Validators.max(90)]);
   public longitude = new FormControl('', [Validators.required, Validators.min(-180), Validators.max(180)]);
@@ -43,17 +43,13 @@ export class AddCardComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onSelect() {
-    this.optionSelected = true;
-  }
-
   onConfirm() {
-    this.optionSelected = false;
+    this.optionConfirmed = true;
   }
 
   hasErrors(): boolean {
     let hasErrors = false;
-    if (this.latitude.errors || this.longitude.errors || this.city.errors || !this.optionSelected) {
+    if (this.latitude.errors || this.longitude.errors || this.city.errors || this.optionConfirmed) {
       hasErrors = true;
     }
     return hasErrors;
