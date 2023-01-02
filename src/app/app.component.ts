@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   public math = Math;
 
   public mouseOverButton = false;
+  public showDetails = false;
 
   public city = new FormControl();
   public cities: City[] = [];
@@ -122,7 +123,7 @@ export class AppComponent implements OnInit {
 
   public showInformation(index: number) {
     console.log(this.weatherInfo[index]);
-    window.alert('Information logged to console');
+    this.showDetails = !this.showDetails;
   }
 
   public toggleButtons(index: number, mouseOver?: boolean) {

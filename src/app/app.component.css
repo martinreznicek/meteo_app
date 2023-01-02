@@ -141,3 +141,7 @@ mat-card-header div {
   text-align: right;
   padding-right: 25px;
 }
+
+#details div {
+  display: flex;
+}

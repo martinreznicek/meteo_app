@@ -93,9 +93,30 @@
             <div class="text-center" style="font-size: 1.25rem;">{{wi.weather.wind.speed}} m/s</div>
           </div>
         </div>
+        <div *ngIf="showDetails" id="details" class="m-1">
+          <br>
+          <mat-card-subtitle> Detailed information </mat-card-subtitle>
+          <div>
+            <span class="flex-fill">Temperature/feels like:</span>
+            <span>{{wi.weather.main.temp}} / {{wi.weather.main.feels_like}} °C</span>
+          </div>
+          <div>
+            <span class="flex-fill">Pressure</span>
+            <span>{{wi.weather.main.pressure}} hPa</span>
+          </div>
+          <div>
+            <span class="flex-fill">Visibility</span>
+            <span>{{wi.weather.visibility}} m</span>
+          </div>
+          <div>
+            <span class="flex-fill">Clouds</span>
+            <span>{{wi.weather.clouds.all}} %</span>
+          </div>
+        </div>
       </mat-card-content>
       <mat-card-actions align="end" style="min-height: 4rem">
-        <button style="background-color: white" [disabled]="weatherInfo.length === 1 && i === 0" mat-fab (click)="showInformation(i)">
+        <button style="background-color: white" [disabled]="weatherInfo.length === 1 && i === 0" mat-fab
+                (click)="showInformation(i)">
           <mat-icon>info</mat-icon>
         </button>
       </mat-card-actions>
