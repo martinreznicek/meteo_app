@@ -120,6 +120,11 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public showInformation(index: number) {
+    console.log(this.weatherInfo[index]);
+    window.alert('Information logged to console');
+  }
+
   public toggleButtons(index: number, mouseOver?: boolean) {
     if (this.mouseOverButton) {
       console.log('mouseOverButton');

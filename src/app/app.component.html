@@ -53,6 +53,10 @@
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>
+            <button mat-menu-item (click)="removeCard(i)">
+              <mat-icon>delete</mat-icon>
+              <span>Remove</span>
+            </button>
           </mat-menu>
         </div>
       </mat-card-header>
@@ -91,11 +95,9 @@
         </div>
       </mat-card-content>
       <mat-card-actions align="end" style="min-height: 4rem">
-        <button [disabled]="weatherInfo.length === 1 && i === 0"  mat-fab color="primary"
-                aria-label="Example icon button with a delete icon" (click)="removeCard(i)">
-          <mat-icon>delete</mat-icon>
+        <button style="background-color: white" [disabled]="weatherInfo.length === 1 && i === 0" mat-fab (click)="showInformation(i)">
+          <mat-icon>info</mat-icon>
         </button>
-    <!--      <button mat-button>SHARE</button>-->
       </mat-card-actions>
     </mat-card>
   </div>
@@ -103,8 +105,8 @@
    <div class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card *ngIf="weatherInfo.length < 4" class="example-card mx-2 h-100">
       <div class="form-floating top-50 ">
-        <button mat-fab class="d-block m-auto" color="accent" aria-label="Example icon button with a delete icon"
-                (click)="addCard()"> <mat-icon>add</mat-icon>
+        <button mat-fab class="d-block m-auto" color="accent" (click)="addCard()">
+          <mat-icon>add</mat-icon>
         </button>
       </div>
     </mat-card>
