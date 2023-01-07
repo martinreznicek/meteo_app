@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
   public city = new FormControl();
   public cities: City[] = [];
 
+  private hideTimeout;
+
   constructor(
     private service: MeteoService,
     private renderer: Renderer2,

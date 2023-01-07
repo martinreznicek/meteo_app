@@ -29,10 +29,13 @@
 </div>
 </header>
 
+<audio controls type="audio/mpeg" src="assets/example.wav"></audio>
+
 <div class="row m-3">
 
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
-    <mat-card class="example-card mx-2 h-100">
+    <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"
+              [ngClass]="{'glow': wi.showButtons}">
       <mat-card-header>
         <mat-card-title>
           {{ wi.name ? wi.name : 'Location ' + i }}
@@ -45,7 +48,8 @@
           {{ wi.coordinates.long > 0 ? 'E' : 'W'}}
         </mat-card-subtitle>
         <div class="d-flex justify-content-end">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                  (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu" class="menu">
@@ -93,7 +97,7 @@
             <div class="text-center" style="font-size: 1.25rem;">{{wi.weather.wind.speed}} m/s</div>
           </div>
         </div>
-        <div *ngIf="showDetails" id="details" class="m-1">
+        <div *ngIf="wi.showDetails" id="details" class="m-1">
           <br>
           <mat-card-subtitle> Detailed information </mat-card-subtitle>
           <div>
@@ -114,12 +118,15 @@
           </div>
         </div>
       </mat-card-content>
-      <mat-card-actions align="end" style="min-height: 4rem">
-        <button style="background-color: white" [disabled]="weatherInfo.length === 1 && i === 0" mat-fab
-                (click)="showInformation(i)">
-          <mat-icon>info</mat-icon>
+<!--      <mat-card-actions align="end" style="min-height: 4rem">-->
+      <div class="h-1-5">
+        <button mat-icon-button aria-label="Expand more or less info" class="d-flex mx-auto"
+                *ngIf="wi.showButtons" (click)="showInformation(i)">
+          <mat-icon *ngIf="!wi.showDetails">expand_more</mat-icon>
+          <mat-icon *ngIf="wi.showDetails">expand_less</mat-icon>
         </button>
-      </mat-card-actions>
+<!--      </mat-card-actions>-->
+      </div>
     </mat-card>
   </div>
 

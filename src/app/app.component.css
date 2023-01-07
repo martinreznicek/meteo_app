@@ -87,6 +87,10 @@ mat-card-header div {
   margin: 0 auto;
 }
 
+.h-1-5 {
+  height: 1.5rem;
+}
+
 .minus-30 {
   border-bottom: black solid 1px;
   position: relative;
@@ -116,6 +120,10 @@ mat-card-header div {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.glow {
+  box-shadow: 0 0 5px 5px lightgrey;
 }
 
 #barTemp {
