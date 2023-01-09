@@ -116,6 +116,12 @@ mat-card-header div {
   margin: 1.5rem auto;
 }
 
+.helper {
+  display: inline-block;
+  height: 25%;
+  vertical-align: middle;
+}
+
 .vertallign {
   display: flex;
   justify-content: center;

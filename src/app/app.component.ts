@@ -20,10 +20,12 @@ export class AppComponent implements OnInit {
   public math = Math;
 
   public mouseOverButton = false;
-  public showDetails = false;
 
   public city = new FormControl();
   public cities: City[] = [];
+
+  public cardTemplate = 0;
+  public loading = false;
 
   private hideTimeout;
 
@@ -70,11 +72,11 @@ export class AppComponent implements OnInit {
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
-      // this.setTemperatureAndHumidity(this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
       if (!onInit) {
         setTimeout(() => {
           this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
-        }, 0);
+          this.setTemperatureAndHumidity(index, this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
+        }, 200);
       }
       this.lastUpdate = this.setLastUpdate(this.weatherInfo[index].weather.dt);
       this.weatherInfo[index].loading = false;
@@ -124,9 +126,25 @@ export class AppComponent implements OnInit {
   }
 
   public showInformation(index: number) {
-    console.log(this.weatherInfo[index]);
-    this.showDetails = !this.showDetails;
+    this.weatherInfo[index].showDetails = !this.weatherInfo[index].showDetails;
+    if (!this.weatherInfo[index].showDetails) {
+      this.weatherInfo[index].showButtons = false;
+    }
   }
+
+  public showButtons(index?: number) {
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout);
+    }
+    this.weatherInfo[index].showButtons = true;
+  }
+
+  public hideButtons(index: number) {
+    this.hideTimeout = setTimeout(() => {
+      this.weatherInfo[index].showButtons = false;
+    }, 0);
+  }
+
 
   public toggleButtons(index: number, mouseOver?: boolean) {
     if (this.mouseOverButton) {
@@ -147,9 +165,27 @@ export class AppComponent implements OnInit {
     this.mouseOverButton = mouseOver;
   }
 
+  public changeCardStyle() {
+    if (this.cardTemplate === 0) {
+      this.cardTemplate = 1;
+    }
+    else {
+      this.cardTemplate = 0;
+    }
+    this.loading = true;
+    this.weatherInfo.forEach(w => {
+      const index = w.id;
+      setTimeout(() => {
+        this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
+        this.setTemperatureAndHumidity(index, this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
+      }, 200);
+    });
+    this.loading = false;
+  }
+
   private async onDataSelected(data: DialogData) {
     const newObject: WeatherCard = { id: this.weatherInfo.length, coordinates: {lat: 0, long: 0},
-      name: null, weather: null, loading: true, showButtons: false };
+      name: null, weather: null, loading: true, showButtons: false, showDetails: false };
 
     if (data.coordinates.lat) {
       newObject.coordinates = {lat: data.coordinates.lat, long: data.coordinates.long};
@@ -174,16 +210,14 @@ export class AppComponent implements OnInit {
     return (value < 10 ? '0' : '') + value;
   }
 
-  private setTemperatureAndHumidity(temp: number, humi: number) {
-    const tempScale = (temp + 30) * 1.25;
-    // document.getElementById('barTemp').style.height = 4 * tempScale + 'px';
-    // document.getElementById('barHumi').style.height = 4 * humi + 'px';
+  private setTemperatureAndHumidity(index: number, temp: number, humi: number) {
+    const tempOnScale = (temp + 30) * 1.25;
 
-    const temperature = document.getElementById('barTemp2');
-    temperature.style.height = tempScale.toString() + '%';
-    temperature.style.top = (100 - tempScale).toString() + '%';
+    const temperature = document.getElementById('temp_' + index);
+    temperature.style.height = tempOnScale.toString() + '%';
+    temperature.style.top = (100 - tempOnScale).toString() + '%';
 
-    const humidity = document.getElementById('barHumi2');
+    const humidity = document.getElementById('humi_' + index);
     humidity.style.height = humi.toString() + '%';
     humidity.style.top = (100 - humi).toString() + '%';
   }
@@ -237,14 +271,14 @@ export class AppComponent implements OnInit {
     const storedData = localStorage.getItem('weatherInfo_storage');
     if (!storedData) {
       this.weatherInfo.push({id: 0, name: 'Prague', coordinates: {lat: 50.0874654, long: 14.4212535},
-        weather: null, loading: true, showButtons: false});
+        weather: null, loading: true, showButtons: false, showDetails: false });
       return;
     }
     const parsedData = JSON.parse(storedData);
     // tslint:disable-next-line:forin
     for (const key in parsedData) {
       const newObject: WeatherCard = {id: Number(key), name: parsedData[key].name, coordinates: parsedData[key].coordinates,
-        weather: null, loading: true, showButtons: false};
+        weather: null, loading: true, showButtons: false, showDetails: false };
       this.weatherInfo.push(newObject);
     }
   }
