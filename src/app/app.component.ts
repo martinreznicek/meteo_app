@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   public city = new FormControl();
   public cities: City[] = [];
 
-  public cardTemplate = 0;
+  public cardTemplate = 1;
   public loading = false;
 
   private hideTimeout;

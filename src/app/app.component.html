@@ -176,30 +176,39 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <div class="row my-auto mx-3" style="height: 120px">
-          <div class="w-50 h-100">
-            <!--    <div class="plus-50">Zero</div>-->
-            <mat-icon class="d-flex" style="margin-left: 12.5%">device_thermostat</mat-icon>
+        <div class="row my-auto mx-3" style="height: 132px">
+          <div class="w-50 h-100 d-flex-col">
+<!--            <div class="plus-50"></div>-->
+            <div class="d-flex mx-auto" style="height: 2rem">
+<!--              <mat-icon class="d-flex" style="margin-left: 12.5%">device_thermostat</mat-icon>-->
+              <mat-icon>device_thermostat</mat-icon>
+              <div>{{wi.weather.main.temp + ' °C'}}</div>
+            </div>
             <div class="zero"></div>
-            <!--    <div class="minus-30">Zero</div>-->
+<!--            <div class="minus-30"></div>-->
             <div class="progress">
               <div [id]="'temp_' + i" class="progress-bar" [ngClass]="wi.weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
-                   role="progressbar" aria-valuenow="80" aria-valuemin="-30" aria-valuemax="50"> {{weatherInfo[0].weather.main.temp + ' °C'}}
+                   role="progressbar" aria-valuenow="80" aria-valuemin="-30" aria-valuemax="50">
               </div>
             </div>
           </div>
-          <div class="w-50 h-100">
-            <mat-icon class="d-flex" style="margin-left: 12.5%">water_drop</mat-icon>
+          <div class="w-50 h-100 d-flex-col">
+            <div class="d-flex mx-auto" style="height: 2rem">
+<!--              <mat-icon class="d-flex" style="margin-left: 12.5%">water_drop</mat-icon>-->
+              <mat-icon>water_drop</mat-icon>
+              <div>{{wi.weather.main.humidity + ' %'}}</div>
+            </div>
+            <div class="zero" style="border-bottom-color: rgba(0, 0, 0, 0)"></div>
             <div class="progress" style="left: 60%;">
-              <div [id]="'humi_' + i" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                {{wi.weather.main.humidity + ' %'}}
+              <div [id]="'humi_' + i" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
           </div>
         </div>
+        <div class="bottomLine"></div>
         <div class="row">
           <div class="col-6 fs-3 vertallign">
-            <img mat-card-image class="watherImg w-50 my-auto" alt="Weather"
+            <img mat-card-image class="watherImg my-auto" alt="Weather" style="width: 65%"
                  [src]="'http://openweathermap.org/img/wn/' + wi.weather.weather[0].icon + '@2x.png'">
           </div>
           <div class="col-6 h-100">
@@ -218,19 +227,19 @@
         <div *ngIf="wi.showDetails" id="details2" class="m-1">
           <br>
           <mat-card-subtitle> Detailed information </mat-card-subtitle>
-          <div>
+          <div class="d-flex">
             <span class="flex-fill">Temperature/feels like:</span>
             <span>{{wi.weather.main.temp}} / {{wi.weather.main.feels_like}} °C</span>
           </div>
-          <div>
+          <div class="d-flex">
             <span class="flex-fill">Pressure</span>
             <span>{{wi.weather.main.pressure}} hPa</span>
           </div>
-          <div>
+          <div class="d-flex">
             <span class="flex-fill">Visibility</span>
             <span>{{wi.weather.visibility}} m</span>
           </div>
-          <div>
+          <div class="d-flex">
             <span class="flex-fill">Clouds</span>
             <span>{{wi.weather.clouds.all}} %</span>
           </div>

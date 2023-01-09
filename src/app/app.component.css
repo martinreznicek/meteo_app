@@ -87,6 +87,13 @@ mat-card-header div {
   margin: 0 auto;
 }
 
+.bottomLine {
+  border-bottom: lightgrey solid 1px;
+  width: 95%;
+  margin: auto;
+  height: 1rem
+}
+
 .h-1-5 {
   height: 1.5rem;
 }
@@ -94,11 +101,17 @@ mat-card-header div {
 .minus-30 {
   border-bottom: black solid 1px;
   position: relative;
-  top: 100%
+  top: 75%;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .plus-50 {
   border-bottom: black solid 1px;
+  position: relative;
+  top: 25%;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .example-card {
@@ -130,6 +143,11 @@ mat-card-header div {
 
 .glow {
   box-shadow: 0 0 5px 5px lightgrey;
+}
+
+.d-flex-col {
+  display: flex;
+  flex-flow: column;
 }
 
 #barTemp {
