@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Add location</h1>
+<div mat-dialog-content>
+  <p>Select a location to add</p>
+  <mat-form-field class="w-90">
+    <input matInput type="text" placeholder="Select a city"
+           [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName"
+                      (optionSelected)="locationSelected = true">
+      <mat-option *ngFor="let option of cities" [value]="!optionConfirmed ? option : ''">
+        {{ option.name + ', ' + option.country }}
+        {{ option.state ? ' (' + option.state + ')' : '' }}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="city.hasError('required') && !insertGpsManually">
+      Location is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-slide-toggle [(ngModel)]="insertGpsManually" (change)="onChange($event)">Enter GPS manually</mat-slide-toggle>
+  <div >
+    <mat-form-field class="w-90">
+      <mat-label>Latitude</mat-label>
+      <input matInput type="number" [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually" [formControl]="latitude">
+      <mat-error *ngIf="latitude.hasError('required')">
+        Latitude is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="latitude.hasError('min') || latitude.hasError('max')">
+        Latitude must be between <strong>-90</strong> and <strong>90</strong> degrees
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-90">
+      <mat-label>Longitude</mat-label>
+      <input matInput type="number" [(ngModel)]="data.coordinates.long" [disabled]="insertGpsManually" [formControl]="longitude">
+      <mat-error *ngIf="longitude.hasError('required')">
+        Longitude is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="longitude.hasError('min') || longitude.hasError('max')">
+        Latitude must be between <strong>-180</strong> and <strong>180</strong> degrees
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="hasErrors()" [mat-dialog-close]="data" (click)="onConfirm()">
+    OK</button>
+</div>
