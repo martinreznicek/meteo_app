@@ -4,7 +4,8 @@
   <mat-form-field class="w-90">
     <input matInput type="text" placeholder="Select a city"
            [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName" >
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName"
+                      (optionSelected)="locationSelected = true">
       <mat-option *ngFor="let option of cities" [value]="!optionConfirmed ? option : ''">
         {{ option.name + ', ' + option.country }}
         {{ option.state ? ' (' + option.state + ')' : '' }}

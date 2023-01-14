@@ -24,6 +24,7 @@ export class AddCardComponent implements OnInit {
   public doneTypingInterval = 1500;
   public insertGpsManually = false;
   public optionConfirmed = false;
+  public locationSelected = false;
   public city = new FormControl( '', [Validators.required]);
   public latitude = new FormControl( '', [Validators.required, Validators.min(-90), Validators.max(90)]);
   public longitude = new FormControl('', [Validators.required, Validators.min(-180), Validators.max(180)]);
@@ -49,7 +50,7 @@ export class AddCardComponent implements OnInit {
 
   hasErrors(): boolean {
     let hasErrors = false;
-    if (this.latitude.errors || this.longitude.errors || this.city.errors || this.optionConfirmed) {
+    if (this.latitude.errors || this.longitude.errors || this.city.errors || !this.locationSelected || this.optionConfirmed) {
       hasErrors = true;
     }
     return hasErrors;
