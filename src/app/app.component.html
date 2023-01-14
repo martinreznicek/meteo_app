@@ -184,13 +184,13 @@
               <mat-icon>device_thermostat</mat-icon>
               <div>{{wi.weather.main.temp + ' °C'}}</div>
             </div>
-            <div class="zero"></div>
+            <div class="zero">0</div>
 <!--            <div class="minus-30"></div>-->
-            <div class="progress">
-              <div [id]="'temp_' + i" class="progress-bar" [ngClass]="wi.weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
-                   role="progressbar" aria-valuenow="80" aria-valuemin="-30" aria-valuemax="50">
+              <div class="progress">
+                <div [id]="'temp_' + i" class="progress-bar" [ngClass]="wi.weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
+                     role="progressbar" aria-valuenow="80" aria-valuemin="-30" aria-valuemax="50">
+                </div>
               </div>
-            </div>
           </div>
           <div class="w-50 h-100 d-flex-col">
             <div class="d-flex mx-auto" style="height: 2rem">
