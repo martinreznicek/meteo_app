@@ -10,6 +10,7 @@ import {FormControl, Validators} from '@angular/forms';
 export class EditNameComponent implements OnInit {
 
   public name = new FormControl( '', [Validators.required]);
+  public darkTheme = true;
 
   constructor(
     public dialogRef: MatDialogRef<EditNameComponent>,

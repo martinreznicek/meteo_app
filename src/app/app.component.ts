@@ -6,6 +6,7 @@ import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
 import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-name.component';
+import {ViewStateService} from './meteo/services/view-state.service';
 
 @Component({
   selector: 'app-root',
@@ -24,13 +25,14 @@ export class AppComponent implements OnInit {
   public city = new FormControl();
   public cities: City[] = [];
 
-  public cardTemplate = 1;
+  public darkTheme = false;
   public loading = false;
 
   private hideTimeout;
 
   constructor(
-    private service: MeteoService,
+    private meteoService: MeteoService,
+    public viewState: ViewStateService,
     private renderer: Renderer2,
     public dialog: MatDialog
   ) { }
@@ -68,7 +70,7 @@ export class AppComponent implements OnInit {
 
   private async getWeatherInfo(index: number, coordinates: {lat: number, long: number}, onInit?: boolean) {
     try {
-      this.weatherInfo[index].weather = await this.service.getWeather(coordinates);
+      this.weatherInfo[index].weather = await this.meteoService.getWeather(coordinates);
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
@@ -166,12 +168,7 @@ export class AppComponent implements OnInit {
   }
 
   public changeCardStyle() {
-    if (this.cardTemplate === 0) {
-      this.cardTemplate = 1;
-    }
-    else {
-      this.cardTemplate = 0;
-    }
+    this.viewState.changeCardTemplate();
     this.loading = true;
     this.weatherInfo.forEach(w => {
       const index = w.id;
