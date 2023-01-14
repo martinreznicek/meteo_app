@@ -1,7 +1,5 @@
 <head>
   <title>Waether Info</title>
-<!--  <script src="https://api.mapy.cz/loader.js"></script>-->
-<!--  <script>Loader.load()</script>-->
 </head>
 
 <header>
@@ -12,17 +10,17 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" class="menu">
-        <button mat-menu-item>
-          <mat-icon> insert_chart_outlined</mat-icon>
-          <span>Forecast</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications</mat-icon>
-          <span>Alerts</span>
-        </button>
+<!--        <button mat-menu-item>-->
+<!--          <mat-icon> insert_chart_outlined</mat-icon>-->
+<!--          <span>Forecast</span>-->
+<!--        </button>-->
+<!--        <button mat-menu-item>-->
+<!--          <mat-icon>notifications</mat-icon>-->
+<!--          <span>Alerts</span>-->
+<!--        </button>-->
         <button (click)="changeCardStyle()" mat-menu-item>
           <mat-icon>image</mat-icon>
-          <span>Card Layout</span>
+          <span>Change card layout</span>
         </button>
       </mat-menu>
     </div>
@@ -73,7 +71,6 @@
           <div class="col-6 fs-3">
             <div class="h-50 vertallign">
             <span>
-<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">device_thermostat</mat-icon>
               {{wi.weather.main.temp}} °C
             </span>
@@ -81,7 +78,6 @@
             <div class="h-50 vertallign">
             <span>
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">water_drop</mat-icon>
-              <!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
               {{wi.weather.main.humidity}} %
             </span>
             </div>
@@ -90,7 +86,6 @@
             <div class="row">
               <div class="col-3 align-self-center">
                 <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
-                <!--           <fa-icon [icon]="wind" size="lg"></fa-icon>-->
               </div>
               <div class="col-6">
                 <img [id]="'windmeter' + i" class="windmeter" src="/assets/images/arrow.png" alt="image">
@@ -120,14 +115,12 @@
           </div>
         </div>
       </mat-card-content>
-<!--      <mat-card-actions align="end" style="min-height: 4rem">-->
       <div class="h-1-5">
         <button mat-icon-button aria-label="Expand more or less info" class="d-flex mx-auto"
                 *ngIf="wi.showButtons" (click)="showInformation(i)">
           <mat-icon *ngIf="!wi.showDetails">expand_more</mat-icon>
           <mat-icon *ngIf="wi.showDetails">expand_less</mat-icon>
         </button>
-<!--      </mat-card-actions>-->
       </div>
     </mat-card>
   </div>
@@ -180,7 +173,6 @@
           <div class="w-50 h-100 d-flex-col">
 <!--            <div class="plus-50"></div>-->
             <div class="d-flex mx-auto" style="height: 2rem">
-<!--              <mat-icon class="d-flex" style="margin-left: 12.5%">device_thermostat</mat-icon>-->
               <mat-icon>device_thermostat</mat-icon>
               <div>{{wi.weather.main.temp + ' °C'}}</div>
             </div>
@@ -194,7 +186,6 @@
           </div>
           <div class="w-50 h-100 d-flex-col">
             <div class="d-flex mx-auto" style="height: 2rem">
-<!--              <mat-icon class="d-flex" style="margin-left: 12.5%">water_drop</mat-icon>-->
               <mat-icon>water_drop</mat-icon>
               <div>{{wi.weather.main.humidity + ' %'}}</div>
             </div>
@@ -245,14 +236,12 @@
           </div>
         </div>
       </mat-card-content>
-      <!--      <mat-card-actions align="end" style="min-height: 4rem">-->
       <div class="h-1-5">
         <button mat-icon-button aria-label="Expand more or less info" class="d-flex mx-auto"
                 *ngIf="wi.showButtons" (click)="showInformation(i)">
           <mat-icon *ngIf="!wi.showDetails">expand_more</mat-icon>
           <mat-icon *ngIf="wi.showDetails">expand_less</mat-icon>
         </button>
-        <!--      </mat-card-actions>-->
       </div>
     </mat-card>
   </div>
