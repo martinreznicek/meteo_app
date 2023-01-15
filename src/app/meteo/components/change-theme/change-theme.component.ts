@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CardLayout } from '../../models/weather-card.model';
+import {ViewStateService} from '../../services/view-state.service';
 
 @Component({
   selector: 'app-change-theme',
@@ -14,20 +15,25 @@ export class ChangeThemeComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ChangeThemeComponent>,
-    // public viewState: ViewStateService;
+    public viewState: ViewStateService
   ) { }
 
   ngOnInit(): void {
-    // this.selected = viewState.cardLayout;
+    this.selected = this.viewState.cardTemplate;
   }
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 
   onSelect(layout: CardLayout) {
     this.selected = layout;
-    // this.viewState.setLayout(layoutId);
+  }
+
+  onConfirm() {
+    this.viewState.changeCardTemplate(this.selected);
+    this.viewState.rerender$.next();
+    this.dialogRef.close();
   }
 
 }
