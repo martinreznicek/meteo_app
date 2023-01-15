@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <p>Select a location to add</p>
   <mat-form-field class="w-90">
-    <mat-label style="color: greenyellow">Select a city</mat-label>
+    <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Select a city</mat-label>
     <input matInput type="text"
            [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName"
@@ -19,7 +19,7 @@
   <mat-slide-toggle [(ngModel)]="insertGpsManually" (change)="onChange($event)">Enter GPS manually</mat-slide-toggle>
   <div >
     <mat-form-field class="w-90">
-      <mat-label style="color: greenyellow">Latitude</mat-label>
+      <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Latitude</mat-label>
       <input matInput type="number"
              [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually" [formControl]="latitude">
       <mat-error *ngIf="latitude.hasError('required')">
@@ -30,7 +30,7 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field class="w-90">
-      <mat-label style="color: greenyellow">Longitude</mat-label>
+      <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Longitude</mat-label>
       <input matInput type="number"
              [(ngModel)]="data.coordinates.long" [disabled]="insertGpsManually" [formControl]="longitude">
       <mat-error *ngIf="longitude.hasError('required')">

@@ -2,3 +2,45 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Helvetica, sans-serif }
+
+.lightHeader {
+  background: powderblue;
+}
+
+.darkHeader {
+  background: #111111;
+  color: white;
+}
+
+.darkCard {
+  background: #222222;
+  color: #dddddd;
+}
+
+.darkSubtitle {
+  color: #999999;
+}
+
+.darkMenu {
+  background: #222222;
+  color: #dddddd;
+  box-shadow: 0 2px 4px -1px rgb(255 255 255 / 20%),
+              0 4px 5px 0 rgb(255 255 255 / 14%),
+              0 1px 10px 0 rgb(255 255 255 / 12%);
+}
+
+.darkDialog {
+  background: #222222;
+  color: #dddddd;
+  box-shadow:	0 11px 15px -7px rgb(255 255 255 / 20%),
+              0 24px 38px 3px rgb(255 255 255 / 14%),
+              0 9px 46px 8px rgb(255 255 255 / 12%)
+}
+
+.inverseFont {
+  color: white;
+}
+
+.inverseColor {
+  color: #dddddd !important;
+}

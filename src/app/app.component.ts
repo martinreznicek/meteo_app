@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   public city = new FormControl();
   public cities: City[] = [];
 
-  public darkTheme = false;
   public loading = false;
 
   private hideTimeout;
@@ -38,14 +37,11 @@ export class AppComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.viewState.loadUiFromStorage();
     this.loadFromStorage();
     this.getAllWeather();
-
+    this.viewState.setBodyDark();
   }
-
-  /*TODO
-    add input validation for min and max number https://www.concretepage.com/angular-2/angular-4-min-max-validation
-  */
 
   public showTemperature(): number {
     const temp = Math.floor(Math.random() * 100);
