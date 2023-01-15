@@ -19,13 +19,15 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { AddCardComponent } from './meteo/components/add-card/add-card.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { EditNameComponent } from './meteo/components/edit-name/edit-name/edit-name.component';
+import { ChangeThemeComponent } from './meteo/components/change-theme/change-theme.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AddCardComponent,
-    EditNameComponent
+    EditNameComponent,
+    ChangeThemeComponent
   ],
   imports: [
     BrowserModule,

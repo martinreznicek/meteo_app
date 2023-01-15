@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
 import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-name.component';
 import {ViewStateService} from './meteo/services/view-state.service';
+import {ChangeThemeComponent} from './meteo/components/change-theme/change-theme.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   public city = new FormControl();
   public cities: City[] = [];
 
+  public cardTemplate = 1;
   public loading = false;
 
   private hideTimeout;
@@ -95,6 +97,10 @@ export class AppComponent implements OnInit {
     ':' + this.formateDatetimeValue(dateTime.getSeconds());
 
     return date;
+  }
+
+  public openLayoutDialog() {
+    this.dialog.open(ChangeThemeComponent);
   }
 
   public async addCard() {

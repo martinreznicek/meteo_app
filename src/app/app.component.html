@@ -18,7 +18,7 @@
           <mat-slide-toggle [ngModel]="viewState.darkTheme"></mat-slide-toggle>
           <span class="mx-2"> {{ viewState.darkTheme ? 'Light theme' : 'Dark theme'}} </span>
         </button>
-        <button (click)="changeCardStyle()" mat-menu-item>
+        <button (click)="openLayoutDialog()" mat-menu-item>
           <mat-icon>image</mat-icon>
           <span class="mx-2">Card Layout</span>
         </button>

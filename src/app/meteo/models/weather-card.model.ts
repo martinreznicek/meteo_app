@@ -12,3 +12,8 @@ export interface WeatherCard {
   showDetails: boolean;
   loading?: boolean;
 }
+
+export enum CardLayout {
+  Digital= 'DIGITAL',
+  Graphical = 'GRAPHICAL'
+}
