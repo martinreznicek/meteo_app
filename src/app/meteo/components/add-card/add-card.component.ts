@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, Validators} from '@angular/forms';
 import {MeteoService} from '../../meteo.service';
 import {City} from '../../models/city.model';
+import {ViewStateService} from '../../services/view-state.service';
 
 export interface DialogData {
   city: City;
@@ -30,14 +31,16 @@ export class AddCardComponent implements OnInit {
   public longitude = new FormControl('', [Validators.required, Validators.min(-180), Validators.max(180)]);
 
   constructor(
-    public dialogRef: MatDialogRef<AddCardComponent>,
     private service: MeteoService,
+    public viewState: ViewStateService,
+    public dialogRef: MatDialogRef<AddCardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
   ngOnInit(): void {
     this.latitude.disable();
     this.longitude.disable();
+    this.viewState.setDialogDark();
   }
 
   onNoClick(): void {

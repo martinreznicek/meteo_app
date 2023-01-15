@@ -2,25 +2,25 @@
   <title>Waether Info</title>
 </head>
 
-<header>
+<header [ngClass]="viewState.darkTheme ? 'darkHeader': 'lightHeader'">
   <div class="d-flex">
   <h1 class="flex-fill">Weather info</h1>
-    <div>
+    <div (click)="viewState.setMenuTheme()">
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" class="menu">
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon> insert_chart_outlined</mat-icon>-->
-<!--          <span>Forecast</span>-->
-<!--        </button>-->
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon>notifications</mat-icon>-->
-<!--          <span>Alerts</span>-->
-<!--        </button>-->
+        <button mat-menu-item>
+          <mat-icon> insert_chart_outlined</mat-icon>
+          <span class="mx-2">Forecast</span>
+        </button>
+        <button (click)="viewState.changeTheme()" mat-menu-item>
+          <mat-slide-toggle [ngModel]="viewState.darkTheme"></mat-slide-toggle>
+          <span class="mx-2"> {{ viewState.darkTheme ? 'Light theme' : 'Dark theme'}} </span>
+        </button>
         <button (click)="changeCardStyle()" mat-menu-item>
           <mat-icon>image</mat-icon>
-          <span>Change card layout</span>
+          <span class="mx-2">Card Layout</span>
         </button>
       </mat-menu>
     </div>
@@ -31,23 +31,23 @@
   <mat-spinner></mat-spinner>
 </div>
 
-<div *ngIf="cardTemplate === 0 && !loading" class="row m-3">
+<div *ngIf="viewState.cardTemplate === 0 && !loading" class="row m-3">
 
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"
-              [ngClass]="{'glow': wi.showButtons}">
+              [ngClass]="{'glow': wi.showButtons, 'darkCard': viewState.darkTheme}">
       <mat-card-header>
         <mat-card-title>
           {{ wi.name ? wi.name : 'Location ' + i }}
         </mat-card-title>
-        <mat-card-subtitle>
+        <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">
           <mat-icon class="align-bottom" aria-hidden="false" aria-label="Example home icon">location_on</mat-icon>
           {{ math.abs(wi.coordinates.lat).toFixed(5) }}
           {{ wi.coordinates.lat > 0 ? 'N' : 'S' + ', ' }}
           {{ math.abs(wi.coordinates.long).toFixed(5) }}
           {{ wi.coordinates.long > 0 ? 'E' : 'W'}}
         </mat-card-subtitle>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end" (click)="viewState.setMenuTheme()">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
                   (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)">
             <mat-icon>more_vert</mat-icon>
@@ -71,6 +71,7 @@
           <div class="col-6 fs-3">
             <div class="h-50 vertallign">
             <span>
+<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">device_thermostat</mat-icon>
               {{wi.weather.main.temp}} °C
             </span>
@@ -78,6 +79,7 @@
             <div class="h-50 vertallign">
             <span>
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">water_drop</mat-icon>
+              <!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
               {{wi.weather.main.humidity}} %
             </span>
             </div>
@@ -86,9 +88,11 @@
             <div class="row">
               <div class="col-3 align-self-center">
                 <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
+                <!--           <fa-icon [icon]="wind" size="lg"></fa-icon>-->
               </div>
               <div class="col-6">
-                <img [id]="'windmeter' + i" class="windmeter" src="/assets/images/arrow.png" alt="image">
+                <img [id]="'windmeter' + i" class="windmeter" [src]="viewState.darkTheme
+                ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
               </div>
             </div>
             <div class="text-center" style="font-size: 1.25rem;">{{wi.weather.wind.speed}} m/s</div>
@@ -96,7 +100,7 @@
         </div>
         <div *ngIf="wi.showDetails" id="details" class="m-1">
           <br>
-          <mat-card-subtitle> Detailed information </mat-card-subtitle>
+          <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">Detailed information</mat-card-subtitle>
           <div>
             <span class="flex-fill">Temperature/feels like:</span>
             <span>{{wi.weather.main.temp}} / {{wi.weather.main.feels_like}} °C</span>
@@ -126,7 +130,8 @@
   </div>
 
    <div class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
-    <mat-card *ngIf="weatherInfo.length < 4" class="example-card mx-2 h-100">
+    <mat-card *ngIf="weatherInfo.length < 4" class="example-card mx-2 h-100"
+              [ngClass]="{'darkCard': viewState.darkTheme}">
       <div class="form-floating top-50 ">
         <button mat-fab class="d-block m-auto" color="accent" (click)="addCard()">
           <mat-icon>add</mat-icon>
@@ -136,22 +141,22 @@
    </div>
 </div>
 
-<div *ngIf="cardTemplate === 1 && !loading" class="row m-3">
+<div *ngIf="viewState.cardTemplate === 1 && !loading" class="row m-3">
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"
-              [ngClass]="{'glow': wi.showButtons}">
+              [ngClass]="{'glow': wi.showButtons, 'darkCard': viewState.darkTheme}">
       <mat-card-header>
         <mat-card-title>
           {{ wi.name ? wi.name : 'Location ' + i }}
         </mat-card-title>
-        <mat-card-subtitle>
+        <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">
           <mat-icon class="align-bottom" aria-hidden="false" aria-label="Example home icon">location_on</mat-icon>
           {{ math.abs(wi.coordinates.lat).toFixed(5) }}
           {{ wi.coordinates.lat > 0 ? 'N' : 'S' + ', ' }}
           {{ math.abs(wi.coordinates.long).toFixed(5) }}
           {{ wi.coordinates.long > 0 ? 'E' : 'W'}}
         </mat-card-subtitle>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end" (click)="viewState.setMenuTheme()">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
                   (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)">
             <mat-icon>more_vert</mat-icon>
@@ -208,7 +213,8 @@
                 <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
               </div>
               <div class="col-6">
-                <img [id]="'windmeter' + i" class="windmeter" src="/assets/images/arrow.png" alt="image">
+                <img [id]="'windmeter' + i" class="windmeter" [src]="viewState.darkTheme
+                ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
               </div>
             </div>
             <div class="text-center" style="font-size: 1.25rem;">{{wi.weather.wind.speed}} m/s</div>
@@ -217,7 +223,7 @@
 
         <div *ngIf="wi.showDetails" id="details2" class="m-1">
           <br>
-          <mat-card-subtitle> Detailed information </mat-card-subtitle>
+          <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">Detailed information</mat-card-subtitle>
           <div class="d-flex">
             <span class="flex-fill">Temperature/feels like:</span>
             <span>{{wi.weather.main.temp}} / {{wi.weather.main.feels_like}} °C</span>
@@ -247,7 +253,8 @@
   </div>
 
   <div class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
-    <mat-card *ngIf="weatherInfo.length < 4" class="example-card mx-2 h-100">
+    <mat-card *ngIf="weatherInfo.length < 4" class="example-card mx-2 h-100"
+              [ngClass]="{'darkCard': viewState.darkTheme}">
       <div class="form-floating top-50 ">
         <button mat-fab class="d-block m-auto" color="accent" (click)="addCard()">
           <mat-icon>add</mat-icon>
@@ -259,7 +266,7 @@
 
 
 <div class="row my-auto mx-3">
-  <p id="lastUpdate"> Last update: {{lastUpdate}}</p>
+  <p id="lastUpdate" [ngClass]="{'inverseFont': viewState.darkTheme}"> Last update: {{lastUpdate}}</p>
 </div>
 
 

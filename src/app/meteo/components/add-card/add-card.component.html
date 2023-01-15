@@ -2,7 +2,8 @@
 <div mat-dialog-content>
   <p>Select a location to add</p>
   <mat-form-field class="w-90">
-    <input matInput type="text" placeholder="Select a city"
+    <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Select a city</mat-label>
+    <input matInput type="text"
            [(ngModel)]="data.city" [formControl]="city" [matAutocomplete]="auto" (keyup)="startTimer()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSelectedCityName"
                       (optionSelected)="locationSelected = true">
@@ -18,8 +19,9 @@
   <mat-slide-toggle [(ngModel)]="insertGpsManually" (change)="onChange($event)">Enter GPS manually</mat-slide-toggle>
   <div >
     <mat-form-field class="w-90">
-      <mat-label>Latitude</mat-label>
-      <input matInput type="number" [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually" [formControl]="latitude">
+      <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Latitude</mat-label>
+      <input matInput type="number"
+             [(ngModel)]="data.coordinates.lat" [disabled]="!insertGpsManually" [formControl]="latitude">
       <mat-error *ngIf="latitude.hasError('required')">
         Latitude is <strong>required</strong>
       </mat-error>
@@ -28,8 +30,9 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field class="w-90">
-      <mat-label>Longitude</mat-label>
-      <input matInput type="number" [(ngModel)]="data.coordinates.long" [disabled]="insertGpsManually" [formControl]="longitude">
+      <mat-label [ngClass]="{'inverseFont': viewState.darkTheme}">Longitude</mat-label>
+      <input matInput type="number"
+             [(ngModel)]="data.coordinates.long" [disabled]="insertGpsManually" [formControl]="longitude">
       <mat-error *ngIf="longitude.hasError('required')">
         Longitude is <strong>required</strong>
       </mat-error>
@@ -40,7 +43,7 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" [disabled]="hasErrors()" [mat-dialog-close]="data" (click)="onConfirm()">
+  <button mat-raised-button color="primary"  (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="accent" [disabled]="hasErrors()" [mat-dialog-close]="data" (click)="onConfirm()">
     OK</button>
 </div>
