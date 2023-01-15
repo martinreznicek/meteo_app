@@ -277,4 +277,8 @@ export class AppComponent implements OnInit {
     }
   }
 
+  goToForecast(locationId: number) {
+    window.open('https://openweathermap.org/city/' + locationId.toString());
+  }
+
 }
