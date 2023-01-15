@@ -81,6 +81,7 @@ export class AppComponent implements OnInit {
     } catch (error) {
       console.error('getWeatherInfo', error);
     }
+    console.log(this.weatherInfo);
   }
 
   public setLastUpdate(timestamp: number): string {
@@ -274,6 +275,10 @@ export class AppComponent implements OnInit {
         weather: null, loading: true, showButtons: false, showDetails: false };
       this.weatherInfo.push(newObject);
     }
+  }
+
+  goToForecast(locationId: number) {
+    window.open('https://openweathermap.org/city/' + locationId.toString());
   }
 
 }
