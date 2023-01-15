@@ -10,6 +10,10 @@ mat-card-header div {
   flex: auto;
 }
 
+a {
+  text-decoration: none;
+}
+
 .column2 {
   float: left;
   width: 20%;

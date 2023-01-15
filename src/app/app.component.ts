@@ -81,6 +81,7 @@ export class AppComponent implements OnInit {
     } catch (error) {
       console.error('getWeatherInfo', error);
     }
+    console.log(this.weatherInfo);
   }
 
   public setLastUpdate(timestamp: number): string {
