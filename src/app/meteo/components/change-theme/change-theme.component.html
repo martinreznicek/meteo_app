@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Card layout</h1>
+<div mat-dialog-content>
+  <p>Select weather card layout</p>
+  <div class="row m-3">
+    <div class="col-6">
+      <mat-card class="h-100" [ngClass]="{'glow': selected === cardLayout.Graphical, 'darkCard': viewState.darkTheme}"
+                (click)="onSelect(cardLayout.Graphical)">
+        <img [src]="viewState.darkTheme ? '/assets/images/layout1_dark.png' : '/assets/images/layout1.png'"
+             alt="layout1" style="width: 280px">
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <mat-card [ngClass]="{'glow': selected === cardLayout.Digital, 'darkCard': viewState.darkTheme}"
+                (click)="onSelect(cardLayout.Digital)" >
+        <img [src]="viewState.darkTheme ? '/assets/images/layout2_dark.png' : '/assets/images/layout2.png'"
+             alt="layout2" style="width: 280px">
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="accent" (click)="onConfirm()">OK</button>
+</div>

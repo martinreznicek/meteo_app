@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {CardLayout} from '../models/weather-card.model';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +8,8 @@ import { Injectable } from '@angular/core';
 export class ViewStateService {
 
   private theDarkTheme;
-  private theCardTemplate;
+  private theCardTemplate: CardLayout = CardLayout.Graphical;
+  public rerender$ = new Subject();
 
   constructor() { }
 
@@ -30,9 +33,9 @@ export class ViewStateService {
   }
 
   public setDialogDark() {
-    const body = document.getElementsByTagName('mat-dialog-container');
+    const dialog = document.getElementsByTagName('mat-dialog-container');
     // @ts-ignore
-    body[0].classList.add(this.theDarkTheme ? 'darkDialog' : '');
+    dialog[0].classList.add(this.theDarkTheme ? 'darkDialog' : '');
   }
 
   public setMenuTheme() {
@@ -52,17 +55,26 @@ export class ViewStateService {
     }
   }
 
-  public changeCardTemplate() {
-    if (this.theCardTemplate === 0) {
-      this.theCardTemplate = 1;
+  public changeCardTemplate(template?: CardLayout) {
+    if (template) {
+      this.theCardTemplate = template;
+      this.saveUiToStorage();
+      return;
+    }
+
+    if (this.theCardTemplate === CardLayout.Graphical) {
+      this.theCardTemplate = CardLayout.Digital;
     } else {
-      this.theCardTemplate = 0;
+      this.theCardTemplate = CardLayout.Graphical;
     }
     this.saveUiToStorage();
   }
 
   public loadUiFromStorage() {
     const storedUi = localStorage.getItem('weatherInfo_storage_ui');
+    if (!storedUi) {
+      return;
+    }
     this.theCardTemplate = JSON.parse(storedUi).layout;
     this.theDarkTheme = JSON.parse(storedUi).theme;
   }

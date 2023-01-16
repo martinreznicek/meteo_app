@@ -18,7 +18,7 @@
           <mat-slide-toggle [ngModel]="viewState.darkTheme"></mat-slide-toggle>
           <span class="mx-2"> {{ viewState.darkTheme ? 'Light theme' : 'Dark theme'}} </span>
         </button>
-        <button (click)="changeCardStyle()" mat-menu-item>
+        <button (click)="openLayoutDialog()" mat-menu-item>
           <mat-icon>image</mat-icon>
           <span class="mx-2">Card Layout</span>
         </button>
@@ -31,7 +31,7 @@
   <mat-spinner></mat-spinner>
 </div>
 
-<div *ngIf="viewState.cardTemplate === 0 && !loading" class="row m-3">
+<div *ngIf="viewState.cardTemplate === cardTemplate.Digital && !loading" class="row m-3">
 
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"
@@ -145,7 +145,7 @@
    </div>
 </div>
 
-<div *ngIf="viewState.cardTemplate === 1 && !loading" class="row m-3">
+<div *ngIf="viewState.cardTemplate === cardTemplate.Graphical && !loading" class="row m-3">
   <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
     <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"
               [ngClass]="{'glow': wi.showButtons, 'darkCard': viewState.darkTheme}">

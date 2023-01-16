@@ -1,12 +1,13 @@
 import { Component, OnInit, Renderer2} from '@angular/core';
 import {MeteoService} from './meteo/meteo.service';
-import {WeatherCard} from './meteo/models/weather-card.model';
+import {CardLayout, WeatherCard} from './meteo/models/weather-card.model';
 import {FormControl} from '@angular/forms';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
 import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-name.component';
 import {ViewStateService} from './meteo/services/view-state.service';
+import {ChangeThemeComponent} from './meteo/components/change-theme/change-theme.component';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
   public cities: City[] = [];
 
   public loading = false;
-
+  public cardTemplate = CardLayout;
   private hideTimeout;
 
   constructor(
@@ -41,6 +42,13 @@ export class AppComponent implements OnInit {
     this.loadFromStorage();
     this.getAllWeather();
     this.viewState.setBodyDark();
+    this.listenToRerender();
+  }
+
+  private listenToRerender() {
+    this.viewState.rerender$.subscribe( () => {
+      this.rerenderCards();
+    });
   }
 
   public showTemperature(): number {
@@ -95,6 +103,10 @@ export class AppComponent implements OnInit {
     ':' + this.formateDatetimeValue(dateTime.getSeconds());
 
     return date;
+  }
+
+  public openLayoutDialog() {
+    this.dialog.open(ChangeThemeComponent);
   }
 
   public async addCard() {
@@ -164,8 +176,7 @@ export class AppComponent implements OnInit {
     this.mouseOverButton = mouseOver;
   }
 
-  public changeCardStyle() {
-    this.viewState.changeCardTemplate();
+  public rerenderCards() {
     this.loading = true;
     this.weatherInfo.forEach(w => {
       const index = w.id;
