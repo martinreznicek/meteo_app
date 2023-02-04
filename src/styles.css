@@ -53,6 +53,12 @@ mat-card-header div {
   flex: auto;
 }
 
+.weatherImg {
+  width: 40%;
+  display: flex;
+  margin: 1.5rem auto;
+}
+
 .windmeter {
   height: 6rem;
   margin: auto;
@@ -63,6 +69,7 @@ mat-card-header div {
   height: 80%;
   margin: 0 auto;
 }
+
 .progress-bar{
   position:relative;
   width: 100%;
@@ -109,19 +116,19 @@ mat-card-header div {
   text-align: right;
 }
 
-.example-card {
+.weather-card {
   max-width: 400px;
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
-
-.vert-align {
+.v-align {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.h-align {
+  display: flex;
+  justify-content: center;
 }
 
 .glow {

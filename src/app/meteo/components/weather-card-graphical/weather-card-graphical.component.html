@@ -63,7 +63,7 @@
       </div>
       <div class="bottomLine"></div>
       <div class="row">
-        <div class="col-6 fs-3 vert-align">
+        <div class="col-6 fs-3 h-align">
           <img mat-card-image class="weatherImg my-auto" alt="Weather" style="width: 65%"
                [src]="'http://openweathermap.org/img/wn/' + weatherInfo.weather.weather[0].icon + '@2x.png'">
         </div>
@@ -80,8 +80,7 @@
           <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s</div>
         </div>
       </div>
-
-      <div *ngIf="weatherInfo.showDetails" id="details2" class="m-1">
+      <div *ngIf="showDetails" id="details" class="m-1">
         <br>
         <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">Detailed information</mat-card-subtitle>
         <div class="d-flex">
