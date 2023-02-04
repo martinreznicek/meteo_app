@@ -1,7 +1,7 @@
 <header [ngClass]="viewState.darkTheme ? 'darkHeader': 'lightHeader'">
   <div class="d-flex">
     <h1 class="flex-fill">Weather info</h1>
-    <div (click)="viewState.setMenuTheme()">
+    <div>
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
       </button>

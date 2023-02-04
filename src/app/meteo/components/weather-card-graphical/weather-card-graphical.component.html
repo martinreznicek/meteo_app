@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="weatherInfo.weather">
   <mat-card class="weather-card mx-2" (mouseover)="showButtons()" (mouseout)="hideButtons()"
             [ngClass]="{'glow': buttonsVisible, 'darkCard': viewState.darkTheme}">
     <mat-card-header>
@@ -44,7 +44,7 @@
           <div class="zero">0</div>
           <!--            <div class="minus-30"></div>-->
           <div class="progress">
-            <div [id]="'temp_' + weatherInfo.id" class="progress-bar" [ngClass]="weatherInfo.weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
+            <div [id]="'temp' + weatherInfo.id" class="progress-bar" [ngClass]="weatherInfo.weather.main.temp > 0 ? 'bg-danger' : 'bg-primary'"
                  role="progressbar" aria-valuenow="80" aria-valuemin="-30" aria-valuemax="50">
             </div>
           </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="zero" style="border-bottom-color: rgba(0, 0, 0, 0)"></div>
           <div class="progress" style="left: 60%;">
-            <div [id]="'humi_' + weatherInfo.id" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+            <div [id]="'humid' + weatherInfo.id" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@
                 ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
             </div>
           </div>
-          <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s</div>
+          <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s, {{windDirectionCompass}}</div>
         </div>
       </div>
       <div *ngIf="showDetails" id="details" class="m-1">

@@ -53,7 +53,6 @@ export class WeatherCardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log({id: index, name: result.name});
       this.editId.emit({id: index, name: result.name});
     });
   }

@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="weatherInfo.weather">
   <mat-card class="weather-card mx-2" (mouseover)="showButtons()" (mouseout)="hideButtons()"
             [ngClass]="{'glow': buttonsVisible, 'darkCard': viewState.darkTheme}">
     <mat-card-header>
@@ -40,7 +40,6 @@
         <div class="col-6 fs-3">
           <div class="h-50 v-align">
           <span>
-<!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
             <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">device_thermostat</mat-icon>
             {{weatherInfo.weather.main.temp}} °C
           </span>
@@ -48,7 +47,6 @@
           <div class="h-50 v-align">
           <span>
             <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">water_drop</mat-icon>
-            <!--          <fa-icon [icon]="temperature" size="xs"></fa-icon>-->
             {{weatherInfo.weather.main.humidity}} %
           </span>
           </div>
@@ -56,8 +54,7 @@
         <div class="col-6 h-100">
           <div class="row">
             <div class="col-3 align-self-center">
-              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">weatherInfond_power</mat-icon>
-              <!--           <fa-icon [icon]="weatherInfond" size="lg"></fa-icon>-->
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
             </div>
             <div class="col-6">
               <img [id]="'windmeter' + weatherInfo.id" class="windmeter" [src]="viewState.darkTheme

@@ -20,7 +20,6 @@ export class ChangeThemeComponent implements OnInit {
 
   ngOnInit(): void {
     this.selected = this.viewState.cardTemplate;
-    this.viewState.setDialogDark();
   }
 
   onCancel(): void {

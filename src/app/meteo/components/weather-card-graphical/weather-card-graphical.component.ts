@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WeatherCard} from '../../models/weather-card.model';
 import {BaseModel} from '../../models/base.model';
 import {ViewStateService} from '../../services/view-state.service';
@@ -25,13 +25,9 @@ export class WeatherCardGraphicalComponent implements OnInit {
   constructor(
     public viewState: ViewStateService,
     private dialog: MatDialog,
-    private renderer: Renderer2,
   ) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.setWindDirection();
-    }, 2000);
   }
 
   public showButtons() {
@@ -58,7 +54,6 @@ export class WeatherCardGraphicalComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log({id: index, name: result.name});
       this.editId.emit({id: index, name: result.name});
     });
   }
@@ -75,42 +70,16 @@ export class WeatherCardGraphicalComponent implements OnInit {
     }
   }
 
-  private setWindDirection() {
-    this.resolveWindDirection(this.weatherInfo.weather.wind.deg);
-    this.setCompassNeedleAngle(this.weatherInfo.weather.wind.deg);
-  }
-
-  private setCompassNeedleAngle(windDirection: number) {
-    const image = document.getElementById('windmeter' + this.weatherInfo.id);
-    console.log('image is', document.getElementById('windmeter' + this.weatherInfo.id));
-    this.renderer.setStyle(
-      image,
-      'transform',
-      `rotate(${windDirection + 90}deg)`
-    );
-  }
-
-  private resolveWindDirection(windDirection: number) {
-    switch (true) {
-      case (windDirection <= 22.5): this.windDirectionCompass = 'N';
-                                    break;
-      case (windDirection <= 67.5): this.windDirectionCompass = 'NE';
-                                    break;
-      case (windDirection <= 112.5): this.windDirectionCompass = 'E';
-                                     break;
-      case (windDirection <= 157.5): this.windDirectionCompass = 'SE';
-                                     break;
-      case (windDirection <= 202.5): this.windDirectionCompass = 'S';
-                                     break;
-      case (windDirection <= 247.5): this.windDirectionCompass = 'SW';
-                                     break;
-      case (windDirection <= 292.5): this.windDirectionCompass = 'W';
-                                     break;
-      case (windDirection <= 337.5): this.windDirectionCompass = 'NW';
-                                     break;
-      default: this.windDirectionCompass = 'N';
-               break;
-    }
+  private resolveWindDirection(windDirection: number): string {
+    if (windDirection <= 22.5) { return 'N'; }
+    if (windDirection <= 67.5) { return 'NE'; }
+    if (windDirection <= 112.5) { return 'E'; }
+    if (windDirection <= 157.5) { return 'SE'; }
+    if (windDirection <= 202.5) { return 'S'; }
+    if (windDirection <= 247.5) { return 'SW'; }
+    if (windDirection <= 292.5) { return 'W'; }
+    if (windDirection <= 337.5) { return 'NW'; }
+    else { return 'N'; }
   }
 
 }
