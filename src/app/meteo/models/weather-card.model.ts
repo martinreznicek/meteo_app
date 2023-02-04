@@ -1,12 +1,11 @@
 import {Weather} from './weather.model';
+import {BaseModel} from './base.model';
 
-export interface WeatherCard {
-  id: number;
+export interface WeatherCard extends BaseModel {
   coordinates: {
     lat: number;
     long: number;
   };
-  name: string;
   weather: Weather;
   showButtons: boolean;
   showDetails: boolean;

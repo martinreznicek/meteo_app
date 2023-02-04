@@ -20,6 +20,8 @@ import { AddCardComponent } from './meteo/components/add-card/add-card.component
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { EditNameComponent } from './meteo/components/edit-name/edit-name/edit-name.component';
 import { ChangeThemeComponent } from './meteo/components/change-theme/change-theme.component';
+import { WeatherCardComponent } from './meteo/components/weather-card/weather-card.component';
+import { HeaderComponent } from './meteo/components/header/header.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { ChangeThemeComponent } from './meteo/components/change-theme/change-the
     AppComponent,
     AddCardComponent,
     EditNameComponent,
-    ChangeThemeComponent
+    ChangeThemeComponent,
+    WeatherCardComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

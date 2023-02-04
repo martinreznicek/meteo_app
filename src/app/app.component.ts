@@ -5,9 +5,8 @@ import {FormControl} from '@angular/forms';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
-import {EditNameComponent} from './meteo/components/edit-name/edit-name/edit-name.component';
 import {ViewStateService} from './meteo/services/view-state.service';
-import {ChangeThemeComponent} from './meteo/components/change-theme/change-theme.component';
+import {BaseModel} from './meteo/models/base.model';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit {
 
   public loading = false;
   public cardTemplate = CardLayout;
-  private hideTimeout;
 
   constructor(
     private meteoService: MeteoService,
@@ -49,12 +47,6 @@ export class AppComponent implements OnInit {
     this.viewState.rerender$.subscribe( () => {
       this.rerenderCards();
     });
-  }
-
-  public showTemperature(): number {
-    const temp = Math.floor(Math.random() * 100);
-    console.log(temp);
-    return temp;
   }
 
   private getAllWeather() {
@@ -105,10 +97,6 @@ export class AppComponent implements OnInit {
     return date;
   }
 
-  public openLayoutDialog() {
-    this.dialog.open(ChangeThemeComponent);
-  }
-
   public async addCard() {
     const dialogRef = this.dialog.open(AddCardComponent, {
       width: '30%',
@@ -117,63 +105,15 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.onDataSelected(result);
+      // emit object with city and coordinates
     });
   }
 
   public removeCard(index: number) {
     this.weatherInfo.splice(index, 1);
+    // TODO: dialog
+    // console.log('remove', index);
     this.saveToStorage();
-  }
-
-  public openEditDialog(index: number) {
-    const dialogRef = this.dialog.open(EditNameComponent, {
-      width: '20%',
-      data: { name: this.weatherInfo[index].name }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.changeName(index, result.name);
-    });
-  }
-
-  public showInformation(index: number) {
-    this.weatherInfo[index].showDetails = !this.weatherInfo[index].showDetails;
-    if (!this.weatherInfo[index].showDetails) {
-      this.weatherInfo[index].showButtons = false;
-    }
-  }
-
-  public showButtons(index?: number) {
-    if (this.hideTimeout) {
-      clearTimeout(this.hideTimeout);
-    }
-    this.weatherInfo[index].showButtons = true;
-  }
-
-  public hideButtons(index: number) {
-    this.hideTimeout = setTimeout(() => {
-      this.weatherInfo[index].showButtons = false;
-    }, 0);
-  }
-
-
-  public toggleButtons(index: number, mouseOver?: boolean) {
-    if (this.mouseOverButton) {
-      console.log('mouseOverButton');
-      return;
-    }
-    const showButtons = this.weatherInfo[index].showButtons;
-    if (mouseOver) {
-      if (!showButtons) {
-        this.weatherInfo[index].showButtons = true;
-      }
-    } else {
-      this.weatherInfo[index].showButtons = false;
-    }
-  }
-
-  public onBtnOver(mouseOver?: boolean) {
-    this.mouseOverButton = mouseOver;
   }
 
   public rerenderCards() {
@@ -205,8 +145,8 @@ export class AppComponent implements OnInit {
     this.saveToStorage();
   }
 
-  private changeName(index: number, name: string) {
-    this.weatherInfo[index].name = name;
+  public changeName(data: BaseModel) {
+    this.weatherInfo[data.id].name = data.name;
     this.saveToStorage();
   }
 
@@ -286,10 +226,6 @@ export class AppComponent implements OnInit {
         weather: null, loading: true, showButtons: false, showDetails: false };
       this.weatherInfo.push(newObject);
     }
-  }
-
-  goToForecast(locationId: number) {
-    window.open('https://openweathermap.org/city/' + locationId.toString());
   }
 
 }
