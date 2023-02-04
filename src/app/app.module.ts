@@ -23,6 +23,7 @@ import { ChangeThemeComponent } from './meteo/components/dialogs/change-theme/ch
 import { WeatherCardComponent } from './meteo/components/weather-card/weather-card.component';
 import { HeaderComponent } from './meteo/components/header/header.component';
 import { NewCardComponent } from './meteo/components/new-card/new-card.component';
+import { WeatherCardGraphicalComponent } from './meteo/components/weather-card-graphical/weather-card-graphical.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { NewCardComponent } from './meteo/components/new-card/new-card.component
     ChangeThemeComponent,
     WeatherCardComponent,
     HeaderComponent,
-    NewCardComponent
+    NewCardComponent,
+    WeatherCardGraphicalComponent
   ],
   imports: [
     BrowserModule,

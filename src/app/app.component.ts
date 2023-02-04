@@ -70,12 +70,12 @@ export class AppComponent implements OnInit {
       if (!this.weatherInfo[index].name) {
         this.weatherInfo[index].name = this.weatherInfo[index].weather.name;
       }
-      if (!onInit) {
-        setTimeout(() => {
-          this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
-          this.setTemperatureAndHumidity(index, this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
-        }, 200);
-      }
+      // if (!onInit) {
+      //   setTimeout(() => {
+      //     this.setWindDirection(this.weatherInfo[index].weather.wind.deg, 'windmeter' + index);
+      //     this.setTemperatureAndHumidity(index, this.weatherInfo[index].weather.main.temp, this.weatherInfo[index].weather.main.humidity);
+      //   }, 200);
+      // }
       this.lastUpdate = this.setLastUpdate(this.weatherInfo[index].weather.dt);
       this.weatherInfo[index].loading = false;
     } catch (error) {

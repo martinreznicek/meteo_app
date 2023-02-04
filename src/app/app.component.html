@@ -17,6 +17,15 @@
   </div>
 </div>
 
+<div *ngIf="viewState.cardTemplate === cardTemplate.Graphical && !loading" class="row m-3">
+  <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
+    <app-weather-card [weatherInfo]="wi" (removeId)="removeCard($event)" (editId)="changeName($event)"></app-weather-card>
+  </div>
+  <div class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">
+    <app-new-card [numberOfCards]="weatherInfo.length" (addLocation)="addCard($event)"></app-new-card>
+  </div>
+</div>
+
 <!--<div *ngIf="viewState.cardTemplate === cardTemplate.Graphical && !loading" class="row m-3">-->
 <!--  <div *ngFor="let wi of weatherInfo; index as i" class="col-3" [ngClass]="{'mx-auto': weatherInfo.length > 2}">-->
 <!--    <mat-card class="example-card mx-2" (mouseover)="showButtons(i)" (mouseout)="hideButtons(i)"-->
