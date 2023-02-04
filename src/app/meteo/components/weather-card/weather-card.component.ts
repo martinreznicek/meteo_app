@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ViewStateService} from '../../services/view-state.service';
 import {MatDialog} from '@angular/material/dialog';
 import {WeatherCard} from '../../models/weather-card.model';
-import {EditNameComponent} from '../edit-name/edit-name/edit-name.component';
+import {EditNameComponent} from '../dialogs/edit-name/edit-name.component';
 import {BaseModel} from '../../models/base.model';
 
 @Component({

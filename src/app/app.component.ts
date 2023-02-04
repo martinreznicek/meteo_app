@@ -4,7 +4,7 @@ import {CardLayout, WeatherCard} from './meteo/models/weather-card.model';
 import {FormControl} from '@angular/forms';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
-import {AddCardComponent, DialogData} from './meteo/components/add-card/add-card.component';
+import {AddCardComponent, DialogData} from './meteo/components/dialogs/add-card/add-card.component';
 import {ViewStateService} from './meteo/services/view-state.service';
 import {BaseModel} from './meteo/models/base.model';
 

@@ -16,10 +16,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
-import { AddCardComponent } from './meteo/components/add-card/add-card.component';
+import { AddCardComponent } from './meteo/components/dialogs/add-card/add-card.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { EditNameComponent } from './meteo/components/edit-name/edit-name/edit-name.component';
-import { ChangeThemeComponent } from './meteo/components/change-theme/change-theme.component';
+import { EditNameComponent } from './meteo/components/dialogs/edit-name/edit-name.component';
+import { ChangeThemeComponent } from './meteo/components/dialogs/change-theme/change-theme.component';
 import { WeatherCardComponent } from './meteo/components/weather-card/weather-card.component';
 import { HeaderComponent } from './meteo/components/header/header.component';
 

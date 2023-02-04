@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ViewStateService} from '../../services/view-state.service';
-import {ChangeThemeComponent} from '../change-theme/change-theme.component';
+import {ChangeThemeComponent} from '../dialogs/change-theme/change-theme.component';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
