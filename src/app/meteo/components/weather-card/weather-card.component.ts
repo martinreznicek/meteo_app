@@ -23,7 +23,7 @@ export class WeatherCardComponent implements OnInit {
 
   constructor(
     public viewState: ViewStateService,
-    public dialog: MatDialog
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {

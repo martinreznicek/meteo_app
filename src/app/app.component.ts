@@ -4,7 +4,7 @@ import {CardLayout, WeatherCard} from './meteo/models/weather-card.model';
 import {FormControl} from '@angular/forms';
 import {City} from './meteo/models/city.model';
 import {MatDialog} from '@angular/material/dialog';
-import {AddCardComponent, DialogData} from './meteo/components/dialogs/add-card/add-card.component';
+import {DialogData} from './meteo/components/dialogs/add-card/add-card.component';
 import {ViewStateService} from './meteo/services/view-state.service';
 import {BaseModel} from './meteo/models/base.model';
 
@@ -97,18 +97,6 @@ export class AppComponent implements OnInit {
     return date;
   }
 
-  public async addCard() {
-    const dialogRef = this.dialog.open(AddCardComponent, {
-      width: '30%',
-      data: {city: '', coordinates: {}}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.onDataSelected(result);
-      // emit object with city and coordinates
-    });
-  }
-
   public removeCard(index: number) {
     this.weatherInfo.splice(index, 1);
     // TODO: dialog
@@ -128,7 +116,7 @@ export class AppComponent implements OnInit {
     this.loading = false;
   }
 
-  private async onDataSelected(data: DialogData) {
+  public async addCard(data: DialogData) {
     const newObject: WeatherCard = { id: this.weatherInfo.length, coordinates: {lat: 0, long: 0},
       name: null, weather: null, loading: true, showButtons: false, showDetails: false };
 
