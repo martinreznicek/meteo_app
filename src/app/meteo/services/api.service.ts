@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Weather } from './models/weather.model';
+import { Weather } from '../models/weather.model';
 import { Config } from 'src/config';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MeteoService {
+export class ApiService {
 
   constructor(private http: HttpClient) { }
 

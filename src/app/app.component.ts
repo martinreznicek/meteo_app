@@ -1,5 +1,5 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
-import {MeteoService} from './meteo/meteo.service';
+import {ApiService} from './meteo/services/api.service';
 import {CardLayout, WeatherCard} from './meteo/models/weather-card.model';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogData} from './meteo/components/dialogs/add-card/add-card.component';
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   public cardTemplate = CardLayout;
 
   constructor(
-    private meteoService: MeteoService,
+    private apiService: ApiService,
     public viewState: ViewStateService,
     private renderer: Renderer2,
     public dialog: MatDialog
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
   private async getWeatherInfo(id: number, coordinates: {lat: number, long: number}, onInit?: boolean): Promise<void> {
     try {
-      const weather = await this.meteoService.getWeather(coordinates);
+      const weather = await this.apiService.getWeather(coordinates);
       this.weather[id].weather = weather;
       if (!this.weather[id].name) {
         this.weather[id].name = weather.name;
