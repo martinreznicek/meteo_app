@@ -1,0 +1,96 @@
+<div *ngIf="weatherInfo.weather">
+  <mat-card class="weather-card mx-2" (mouseover)="showButtons()" (mouseout)="hideButtons()"
+            [ngClass]="{'glow': buttonsVisible, 'darkCard': viewState.darkTheme}">
+    <mat-card-header>
+      <mat-card-title>
+        {{ weatherInfo.name ? weatherInfo.name : 'Location ' + weatherInfo.id }}
+      </mat-card-title>
+      <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">
+        <mat-icon class="align-bottom" aria-hidden="false" aria-label="Example home icon">location_on</mat-icon>
+        {{ math.abs(weatherInfo.coordinates.lat).toFixed(5) }}
+        {{ weatherInfo.coordinates.lat > 0 ? 'N' : 'S' + ', ' }}
+        {{ math.abs(weatherInfo.coordinates.long).toFixed(5) }}
+        {{ weatherInfo.coordinates.long > 0 ? 'E' : 'W'}}
+      </mat-card-subtitle>
+      <div class="d-flex justify-content-end" (click)="viewState.setMenuTheme()">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button weatherInfoth a menu"
+                (mouseover)="showButtons()" (mouseout)="hideButtons()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" class="menu">
+          <button mat-menu-item (click)="goToForecast(weatherInfo.weather.id)">
+            <mat-icon>insert_chart_outlined</mat-icon>
+            <span>To forecast</span>
+          </button>
+          <button mat-menu-item (click)="openEditDialog(weatherInfo.id)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="removeCard(weatherInfo.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Remove</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-card-header>
+    <img class="weatherImg" alt="Weather"
+         [src]="'http://openweathermap.org/img/wn/' + weatherInfo.weather.weather[0].icon + '@2x.png'">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-6 fs-3">
+          <div class="h-50 v-align">
+          <span>
+            <mat-icon class="align-middle" aria-hidden="false" aria-label="Example home icon">device_thermostat</mat-icon>
+            {{weatherInfo.weather.main.temp}} °C
+          </span>
+          </div>
+          <div class="h-50 v-align">
+          <span>
+            <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">water_drop</mat-icon>
+            {{weatherInfo.weather.main.humidity}} %
+          </span>
+          </div>
+        </div>
+        <div class="col-6 h-100">
+          <div class="row">
+            <div class="col-3 align-self-center">
+              <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
+            </div>
+            <div class="col-6">
+              <img [id]="'windmeter' + weatherInfo.id" class="windmeter" [src]="viewState.darkTheme
+              ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
+            </div>
+          </div>
+          <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s</div>
+        </div>
+      </div>
+      <div *ngIf="showDetails" id="details" class="m-1">
+        <br>
+        <mat-card-subtitle [ngClass]="{'darkSubtitle': viewState.darkTheme}">Detailed information</mat-card-subtitle>
+        <div>
+          <span class="flex-fill">Temperature/feels like:</span>
+          <span>{{weatherInfo.weather.main.temp}} / {{weatherInfo.weather.main.feels_like}} °C</span>
+        </div>
+        <div>
+          <span class="flex-fill">Pressure</span>
+          <span>{{weatherInfo.weather.main.pressure}} hPa</span>
+        </div>
+        <div>
+          <span class="flex-fill">Visibility</span>
+          <span>{{weatherInfo.weather.visibility}} m</span>
+        </div>
+        <div>
+          <span class="flex-fill">Clouds</span>
+          <span>{{weatherInfo.weather.clouds.all}} %</span>
+        </div>
+      </div>
+    </mat-card-content>
+    <div class="h-1-5">
+      <button mat-icon-button aria-label="Expand more or less info" class="d-flex mx-auto"
+              *ngIf="buttonsVisible" (click)="showMoreInfo()">
+        <mat-icon *ngIf="!showDetails">expand_more</mat-icon>
+        <mat-icon *ngIf="showDetails">expand_less</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>

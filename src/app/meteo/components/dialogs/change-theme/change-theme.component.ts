@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CardLayout } from '../../models/weather-card.model';
-import {ViewStateService} from '../../services/view-state.service';
+import { CardLayout } from '../../../models/weather-card.model';
+import {ViewStateService} from '../../../services/view-state.service';
 
 @Component({
   selector: 'app-change-theme',
@@ -20,7 +20,6 @@ export class ChangeThemeComponent implements OnInit {
 
   ngOnInit(): void {
     this.selected = this.viewState.cardTemplate;
-    this.viewState.setDialogDark();
   }
 
   onCancel(): void {

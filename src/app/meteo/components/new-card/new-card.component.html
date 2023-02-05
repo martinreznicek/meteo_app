@@ -1,0 +1,9 @@
+<mat-card *ngIf="numberOfCards < 4" class="weather-card mx-2 h-100"
+          [ngClass]="{'darkCard': viewState.darkTheme}">
+  <div class="form-floating top-50 ">
+    <button mat-fab class="d-block m-auto" color="accent" (click)="addCard()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-card>
+
