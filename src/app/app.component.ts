@@ -77,7 +77,6 @@ export class AppComponent implements OnInit {
 
   public removeCard(index: number) {
     this.weather.splice(index, 1);
-    // TODO: dialog
     this.saveToStorage();
   }
 

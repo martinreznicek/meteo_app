@@ -34,7 +34,6 @@ export class ViewStateService {
 
   public setDialogDark() {
     const dialog = document.getElementsByTagName('mat-dialog-container');
-    // @ts-ignore
     dialog[0].classList.add(this.theDarkTheme ? 'darkDialog' : '');
   }
 
