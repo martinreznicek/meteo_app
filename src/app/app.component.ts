@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
 
   private async getWeatherInfo(id: number, coordinates: {lat: number, long: number}, onInit?: boolean): Promise<void> {
     try {
+      this.weather[id].loading = true;
       const weather = await this.apiService.getWeather(coordinates);
       this.weather[id].weather = weather;
       if (!this.weather[id].name) {
@@ -66,10 +67,8 @@ export class AppComponent implements OnInit {
       }
       if (!onInit) {
         this.renderGraphicalElements(id, weather, 'windmeter' + id);
-
       }
       this.lastUpdate = new Date(weather.dt * 1000);
-      this.weather[id].loading = false;
     } catch (error) {
       console.error('getWeatherInfo', error);
     }
@@ -84,6 +83,7 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.weather.forEach(w => {
       const id = w.id;
+      this.weather[id].loading = true;
       this.renderGraphicalElements(id, this.weather[id].weather, 'windmeter' + id);
     });
     this.loading = false;
@@ -128,6 +128,7 @@ export class AppComponent implements OnInit {
       if (this.viewState.cardTemplate === CardLayout.Graphical) {
         this.setTemperatureAndHumidity(index, weather.main.temp, weather.main.humidity);
       }
+      this.weather[index].loading = false;
     }, 200);
   }
 

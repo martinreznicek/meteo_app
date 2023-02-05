@@ -57,8 +57,9 @@
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
             </div>
             <div class="col-6">
-              <img [id]="'windmeter' + weatherInfo.id" class="windmeter" [src]="viewState.darkTheme
-              ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
+              <img [id]="'windmeter' + weatherInfo.id" class="windmeter"
+                   [src]="viewState.darkTheme ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'"
+                   [ngStyle]="{'visibility': weatherInfo.loading ? 'hidden' : 'visible' }" alt="wind-arrow">
             </div>
           </div>
           <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s</div>
