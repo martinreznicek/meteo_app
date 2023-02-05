@@ -77,7 +77,7 @@
                 ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'" alt="image">
             </div>
           </div>
-          <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s, {{windDirectionCompass}}</div>
+          <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s {{windDirectionCompass}}</div>
         </div>
       </div>
       <div *ngIf="showDetails" id="details" class="m-1">
