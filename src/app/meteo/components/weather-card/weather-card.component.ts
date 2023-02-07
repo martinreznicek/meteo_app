@@ -27,7 +27,6 @@ export class WeatherCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.weatherInfo);
   }
 
   public showButtons() {
