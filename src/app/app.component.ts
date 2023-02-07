@@ -76,6 +76,9 @@ export class AppComponent implements OnInit {
   }
 
   public removeCard(index: number) {
+    if (this.weather.length <= 1) {
+      return;
+    }
     this.weather.splice(index, 1);
     this.saveToStorage();
   }
@@ -142,8 +145,10 @@ export class AppComponent implements OnInit {
 
   private saveToStorage() {
     const obj = {};
+    let i = 0;
     this.weather.forEach(w => {
-      obj[w.id] = { name: w.name, coordinates: w.coordinates };
+      obj[i] = { name: w.name, coordinates: w.coordinates };
+      i++;
     });
     localStorage.setItem('weatherInfo_storage', JSON.stringify(obj));
   }
