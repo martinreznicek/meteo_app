@@ -1,6 +1,7 @@
 <div *ngIf="weatherInfo.weather">
   <mat-card class="weather-card mx-2" (mouseover)="showButtons()" (mouseout)="hideButtons()"
             [ngClass]="{'glow': buttonsVisible, 'darkCard': viewState.darkTheme}">
+    <div [ngStyle]="{'visibility': weatherInfo.loading ? 'hidden' : 'visible' }">
     <mat-card-header>
       <mat-card-title>
         {{ weatherInfo.name ? weatherInfo.name : 'Location ' + weatherInfo.id }}
@@ -57,9 +58,8 @@
               <mat-icon class="align-middle" aria-hidden="false" aria-label="Example thumbs up SVG icon">wind_power</mat-icon>
             </div>
             <div class="col-6">
-              <img [id]="'windmeter' + weatherInfo.id" class="windmeter"
-                   [src]="viewState.darkTheme ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'"
-                   [ngStyle]="{'visibility': weatherInfo.loading ? 'hidden' : 'visible' }" alt="wind-arrow">
+              <img [id]="'windmeter' + weatherInfo.id" class="windmeter" alt="wind-arrow"
+                   [src]="viewState.darkTheme ? '/assets/images/arrow_w.png' : '/assets/images/arrow.png'">
             </div>
           </div>
           <div class="text-center" style="font-size: 1.25rem;">{{weatherInfo.weather.wind.speed}} m/s</div>
@@ -92,6 +92,7 @@
         <mat-icon *ngIf="!showDetails">expand_more</mat-icon>
         <mat-icon *ngIf="showDetails">expand_less</mat-icon>
       </button>
+    </div>
     </div>
   </mat-card>
 </div>

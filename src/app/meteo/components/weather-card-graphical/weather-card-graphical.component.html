@@ -1,6 +1,7 @@
 <div *ngIf="weatherInfo.weather">
   <mat-card class="weather-card mx-2" (mouseover)="showButtons()" (mouseout)="hideButtons()"
             [ngClass]="{'glow': buttonsVisible, 'darkCard': viewState.darkTheme}">
+    <div [ngStyle]="{'visibility': weatherInfo.loading ? 'hidden' : 'visible' }">
     <mat-card-header>
       <mat-card-title>
         {{ weatherInfo.name ? weatherInfo.name : 'Location ' + weatherInfo.id }}
@@ -102,13 +103,13 @@
         </div>
       </div>
     </mat-card-content>
-
     <div class="h-1-5">
       <button mat-icon-button aria-label="Expand more or less info" class="d-flex mx-auto"
               *ngIf="buttonsVisible" (click)="showMoreInfo()">
         <mat-icon *ngIf="!showDetails">expand_more</mat-icon>
         <mat-icon *ngIf="showDetails">expand_less</mat-icon>
       </button>
+    </div>
     </div>
   </mat-card>
 </div>
