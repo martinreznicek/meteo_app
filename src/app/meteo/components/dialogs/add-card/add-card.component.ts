@@ -22,7 +22,7 @@ export class AddCardComponent implements OnInit {
 
   public cities: City[] = [];
   public typingTimer: any;
-  public doneTypingInterval = 1500;
+  public doneTypingInterval = 300;
   public insertGpsManually = false;
   public optionConfirmed = false;
   public locationSelected = false;
@@ -87,7 +87,11 @@ export class AddCardComponent implements OnInit {
   }
 
   private async afterDoneTyping() {
-    this.cities = await this.service.getCoordinates(this.city.value);
+    if (this.city.value) {
+      this.cities = await this.service.getCoordinates(this.city.value);
+    } else {
+      this.cities = [];
+    }
   }
 
 }
